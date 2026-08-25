@@ -3,6 +3,7 @@ package com.github.ferigeek.appdooni.repository;
 import com.github.ferigeek.appdooni.model.Application;
 import com.github.ferigeek.appdooni.model.OperatingSystem;
 import com.github.ferigeek.appdooni.model.Tag;
+import com.github.ferigeek.appdooni.service.TagFilterMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,10 +15,12 @@ import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /** Persistence for {@link Application} entities including their OS and tag associations. */
 public final class ApplicationRepository {
@@ -31,6 +34,60 @@ public final class ApplicationRepository {
 
     public List<Application> findAll() {
         return find("SELECT id, name, description, installation_source, website_url, created_at, updated_at FROM applications");
+    }
+
+    /**
+     * Finds applications matching a free-text search and the given operating
+     * system and tag filters. A null operating system id means no OS filter.
+     * Empty tag ids mean no tag filter; otherwise {@code mode} decides whether
+     * all selected tags (AND) or any of them (OR) must match.
+     */
+    public List<Application> findFiltered(String searchText, Integer operatingSystemId,
+                                          Set<Integer> tagIds, TagFilterMode mode) {
+        StringBuilder sql = new StringBuilder(
+                "SELECT DISTINCT a.id, a.name, a.description, a.installation_source, a.website_url, " +
+                "a.created_at, a.updated_at FROM applications a WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+
+        String term = searchText == null ? "" : searchText.trim();
+        if (!term.isEmpty()) {
+            String like = "%" + term.toLowerCase() + "%";
+            sql.append(" AND (LOWER(a.name) LIKE ? OR LOWER(a.description) LIKE ? " +
+                    "OR LOWER(a.installation_source) LIKE ? OR LOWER(a.website_url) LIKE ? " +
+                    "OR EXISTS (SELECT 1 FROM application_operating_systems aos " +
+                        "JOIN operating_systems os ON os.id = aos.operating_system_id " +
+                        "WHERE aos.application_id = a.id AND LOWER(os.name) LIKE ?) " +
+                    "OR EXISTS (SELECT 1 FROM application_tags at " +
+                        "JOIN tags t ON t.id = at.tag_id " +
+                        "WHERE at.application_id = a.id AND LOWER(t.name) LIKE ?))");
+            params.add(like);
+            params.add(like);
+            params.add(like);
+            params.add(like);
+            params.add(like);
+            params.add(like);
+        }
+        if (operatingSystemId != null) {
+            sql.append(" AND EXISTS (SELECT 1 FROM application_operating_systems aos " +
+                    "WHERE aos.application_id = a.id AND aos.operating_system_id = ?)");
+            params.add(operatingSystemId);
+        }
+        if (tagIds != null && !tagIds.isEmpty()) {
+            String placeholders = String.join(",", Collections.nCopies(tagIds.size(), "?"));
+            if (mode == TagFilterMode.AND) {
+                sql.append(" AND a.id IN (SELECT application_id FROM application_tags WHERE tag_id IN (")
+                        .append(placeholders)
+                        .append(") GROUP BY application_id HAVING COUNT(DISTINCT tag_id) = ?)");
+                params.addAll(tagIds);
+                params.add(tagIds.size());
+            } else {
+                sql.append(" AND a.id IN (SELECT application_id FROM application_tags WHERE tag_id IN (")
+                        .append(placeholders)
+                        .append("))");
+                params.addAll(tagIds);
+            }
+        }
+        return find(sql.toString(), params.toArray());
     }
 
     public Optional<Application> findById(int id) {
