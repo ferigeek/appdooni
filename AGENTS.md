@@ -80,3 +80,9 @@ Description explaining:
 
 * Do not add or remove or modify any dependency or anything related to dependencies.
 * Do not modify `pom.xml`, unless you've explicitly been told.
+
+## Implementation
+
+Details about how the application should be built exactly is at `spec/`, containing:
+- `requirements.md`: Explaining how the application should work and the functionalities.
+- `ui.md`: Describing how the application looks and where each component is placed.

@@ -35,4 +35,4 @@ build/
 ### Mac OS ###
 .DS_Store
 
-ERD.png
+spec/ERD.png
