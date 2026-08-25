@@ -121,6 +121,28 @@ public final class ApplicationRepository {
         }
     }
 
+    /** Returns the applications associated with the given operating system. */
+    public List<Application> findByOperatingSystemId(int operatingSystemId) {
+        String sql = "SELECT id, name, description, installation_source, website_url, created_at, updated_at " +
+                "FROM applications WHERE id IN (SELECT application_id FROM application_operating_systems " +
+                "WHERE operating_system_id = ?)";
+        return find(sql, operatingSystemId);
+    }
+
+    /** Removes only the application-operating-system association, leaving the application intact. */
+    public void removeOperatingSystem(int applicationId, int operatingSystemId) {
+        String sql = "DELETE FROM application_operating_systems WHERE application_id = ? AND operating_system_id = ?";
+        try (Connection connection = databaseManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, applicationId);
+            statement.setInt(2, operatingSystemId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            log.error("Failed to remove OS {} from application {}", operatingSystemId, applicationId, e);
+            throw new IllegalStateException(e);
+        }
+    }
+
     private List<Application> find(String baseSql, Object... params) {
         Map<Integer, Application> applications = new LinkedHashMap<>();
         try (Connection connection = databaseManager.getConnection();
