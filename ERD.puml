@@ -1,0 +1,45 @@
+@startuml
+
+hide methods
+hide stereotypes
+
+entity applications {
+    * id : INTEGER <<PK>>
+    --
+    * name : TEXT
+    description : TEXT
+    installation_source : TEXT
+    website_url : TEXT
+    * created_at : TEXT
+    * updated_at : TEXT
+}
+
+entity operating_systems {
+    * id : INTEGER <<PK>>
+    --
+    * name : TEXT <<UNIQUE>>
+}
+
+entity tags {
+    * id : INTEGER <<PK>>
+    --
+    * name : TEXT <<UNIQUE>>
+}
+
+entity application_operating_systems {
+    * application_id : INTEGER <<PK, FK>>
+    * operating_system_id : INTEGER <<PK, FK>>
+}
+
+entity application_tags {
+    * application_id : INTEGER <<PK, FK>>
+    * tag_id : INTEGER <<PK, FK>>
+}
+
+applications ||--o{ application_operating_systems
+operating_systems ||--o{ application_operating_systems
+
+applications ||--o{ application_tags
+tags ||--o{ application_tags
+
+@enduml
