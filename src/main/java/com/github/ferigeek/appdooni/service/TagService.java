@@ -38,9 +38,11 @@ public final class TagService {
     /** Renames an existing tag. */
     public void updateTag(Tag tag) {
         String trimmed = validateName(tag.getName());
-        if (tagRepository.existsByName(trimmed)) {
-            throw new DuplicateNameException("A tag named '" + trimmed + "' already exists.");
-        }
+        tagRepository.findByName(trimmed).ifPresent(existing -> {
+            if (existing.getId() != tag.getId()) {
+                throw new DuplicateNameException("A tag named '" + trimmed + "' already exists.");
+            }
+        });
         tag.setName(trimmed);
         tagRepository.update(tag);
     }

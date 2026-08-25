@@ -70,6 +70,23 @@ public final class TagRepository {
         }
     }
 
+    public Optional<Tag> findByName(String name) {
+        String sql = "SELECT id, name FROM tags WHERE name = ?";
+        try (Connection connection = databaseManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, name);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return Optional.of(map(resultSet));
+                }
+            }
+        } catch (SQLException e) {
+            log.error("Failed to find tag by name {}", name, e);
+            throw new IllegalStateException(e);
+        }
+        return Optional.empty();
+    }
+
     /** Inserts the tag and returns it with its generated id. */
     public Tag insert(Tag tag) {
         String sql = "INSERT INTO tags (name) VALUES (?)";

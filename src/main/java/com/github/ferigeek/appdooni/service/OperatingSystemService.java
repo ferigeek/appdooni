@@ -44,9 +44,11 @@ public final class OperatingSystemService {
     /** Renames an existing operating system. */
     public void updateOperatingSystem(OperatingSystem operatingSystem) {
         String trimmed = validateName(operatingSystem.getName());
-        if (osRepository.existsByName(trimmed)) {
-            throw new DuplicateNameException("An operating system named '" + trimmed + "' already exists.");
-        }
+        osRepository.findByName(trimmed).ifPresent(existing -> {
+            if (existing.getId() != operatingSystem.getId()) {
+                throw new DuplicateNameException("An operating system named '" + trimmed + "' already exists.");
+            }
+        });
         operatingSystem.setName(trimmed);
         osRepository.update(operatingSystem);
     }

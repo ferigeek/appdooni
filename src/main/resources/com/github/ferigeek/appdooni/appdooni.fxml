@@ -34,12 +34,12 @@
                 </Menu>
                 <Menu text="Edit">
                     <items>
-                        <MenuItem text="Add operating system"/>
-                        <MenuItem text="Modify operating system"/>
-                        <MenuItem text="Delete operating system"/>
-                        <MenuItem text="Adding a tag"/>
-                        <MenuItem text="Modify a tag"/>
-                        <MenuItem text="Delete a tag"/>
+                        <MenuItem text="Add operating system" onAction="#onAddOperatingSystem"/>
+                        <MenuItem text="Modify operating system" onAction="#onModifyOperatingSystem"/>
+                        <MenuItem text="Delete operating system" onAction="#onDeleteOperatingSystem"/>
+                        <MenuItem text="Add a tag" onAction="#onAddTag"/>
+                        <MenuItem text="Modify a tag" onAction="#onModifyTag"/>
+                        <MenuItem text="Delete a tag" onAction="#onDeleteTag"/>
                     </items>
                 </Menu>
                 <Menu text="About">
@@ -61,10 +61,10 @@
                     <children>
                         <Label text="Tags"/>
                         <Region HBox.hgrow="ALWAYS"/>
-                        <Button fx:id="addTagButton" mnemonicParsing="false" text="Add"/>
+                        <Button fx:id="addTagButton" mnemonicParsing="false" text="Add" onAction="#onAddTag"/>
                     </children>
                 </HBox>
-                <ToggleButton fx:id="tagFilterToggle" text="OR" minWidth="60.0" maxWidth="60.0"/>
+                <ToggleButton fx:id="tagFilterToggle" text="OR" minWidth="60.0" maxWidth="60.0" onAction="#onTagFilterToggle"/>
                 <TextField fx:id="tagSearchField" promptText="Search for Tags ..."/>
                 <ListView fx:id="tagListView" VBox.vgrow="ALWAYS"/>
             </children>
@@ -85,10 +85,10 @@
                     <children>
                         <TextField fx:id="appSearchField" HBox.hgrow="ALWAYS" promptText="Search for a Program ..."/>
                         <Region HBox.hgrow="ALWAYS"/>
-                        <Button fx:id="addAppButton" mnemonicParsing="false" text="Add a Program"/>
+                        <Button fx:id="addAppButton" mnemonicParsing="false" text="Add a Program" onAction="#onAddApplication"/>
                     </children>
                 </HBox>
-                <TableView fx:id="applicationTable" VBox.vgrow="ALWAYS">
+                <TableView fx:id="applicationTable" VBox.vgrow="ALWAYS" onMouseClicked="#onApplicationTableClicked">
                     <columns>
                         <TableColumn fx:id="nameColumn" text="Name" prefWidth="160.0"/>
                         <TableColumn fx:id="osColumn" text="Operating Systems" prefWidth="160.0"/>

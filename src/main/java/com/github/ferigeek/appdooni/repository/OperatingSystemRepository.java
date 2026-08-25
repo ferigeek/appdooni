@@ -70,6 +70,23 @@ public final class OperatingSystemRepository {
         }
     }
 
+    public Optional<OperatingSystem> findByName(String name) {
+        String sql = "SELECT id, name FROM operating_systems WHERE name = ?";
+        try (Connection connection = databaseManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, name);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return Optional.of(map(resultSet));
+                }
+            }
+        } catch (SQLException e) {
+            log.error("Failed to find operating system by name {}", name, e);
+            throw new IllegalStateException(e);
+        }
+        return Optional.empty();
+    }
+
     /** Inserts the operating system and returns it with its generated id. */
     public OperatingSystem insert(OperatingSystem operatingSystem) {
         String sql = "INSERT INTO operating_systems (name) VALUES (?)";
