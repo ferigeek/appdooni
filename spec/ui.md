@@ -14,22 +14,24 @@
       - Modify a tag
       - Delete a tag
     - `About`: 
-      - about: shows a tiny window, giving information about the app
-      - source code: goes to the GitHub repository
+      - about: shows a tiny window, giving a short description of what the application is and stating that it was created by the author
+      - source code: goes to the GitHub repository (`https://github.com/ferigeek/appdooni`)
   - Right: Tag section including some sections on top of each other
     - Tag label and add button to add a tag right in front of the label. The button should be the right side of the section, and the label the left side.
+    - A toggle to switch the tag filtering between `AND` (application must match all selected tags) and `OR` (application must match at least one selected tag). It is set to `OR` by default.
     - Search field to search for tags
     - List of tags which you can choose any, one or more, to filter the list of the applications shown.
   - Center: The application section
     - TabPane, tabs on top for each operating system and one tab named "All" at the beginning. the list of the applications should be shown here and filtered out by each tab.
       - If on `All` tab, all the applications should be visible.
       - If on a specific operating system tab, the list should be filtered out based on the corresponding operating system.
-      - If some tags are selected from the tag section, the list should be filtered based on both the tab and the tags.
+      - If some tags are selected from the tag section, the list should be filtered based on both the tab and the tags, using the chosen `AND`/`OR` mode.
     - a Search bar for application under the TabPane, and add button right in front of the search bar.
       - Search bar left side of the section, and the button right side.
+    - The applications are shown in a table (TableView) with columns for name, operating systems, tags, description, source, and website.
   - Bottom: the log section
     - A label with representing the log section
-    - A field that shows the log of the application
+    - A field that shows the log of the application. All logs are shown here and are also written to a log file in the same directory as the database.
   
 # Other UI features
 
@@ -37,5 +39,5 @@
 - For removing tags and operating system, a tiny windows should open, showing the list of tags/operating system, and user should be able to remove from them.
 - By right-clicking any of the tags in the tag list in the tag section user should be able to see options to remove, or edit one.
 - By pressing the add button for application, user should see a tiny window, with required fields to enter.
-- By double-clicking any of the applications in the applications list, user should see a tiny window, showing the information of the application.
+- By double-clicking any of the applications in the applications table, user should see a tiny window, showing the information of the application.
   - There should be a toggle for editing the information, which is disabled by default, but when enabled, the attributes should be editable.
