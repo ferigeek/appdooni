@@ -12,5 +12,6 @@ module com.github.ferigeek.appdooni {
     requires ch.qos.logback.classic;
 
     opens com.github.ferigeek.appdooni to javafx.fxml;
+    opens com.github.ferigeek.appdooni.controller to javafx.fxml;
     exports com.github.ferigeek.appdooni;
 }

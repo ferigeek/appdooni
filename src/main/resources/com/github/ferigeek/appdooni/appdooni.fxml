@@ -3,101 +3,113 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="592.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
-   <top>
-      <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-   </top>
-   <left>
-      <VBox BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </BorderPane.margin>
-         <children>
-            <HBox alignment="CENTER_LEFT" fillHeight="false" prefHeight="25.0" prefWidth="118.0">
-               <children>
-                  <Label text="Tags" />
-                  <HBox prefHeight="26.0" prefWidth="90.0" />
-                  <Button mnemonicParsing="false" text="Add" />
-               </children>
-               <VBox.margin>
-                  <Insets bottom="5.0" />
-               </VBox.margin>
-            </HBox>
-            <TextField promptText="Search for Tags ...">
-               <VBox.margin>
-                  <Insets bottom="5.0" />
-               </VBox.margin>
-            </TextField>
-            <ScrollPane prefHeight="397.0" prefWidth="162.0" />
-         </children>
-      </VBox>
-   </left>
-   <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-         <children>
-            <TabPane prefHeight="450.0" prefWidth="398.0" tabClosingPolicy="UNAVAILABLE">
-              <tabs>
-                <Tab text="All">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                  </content>
-                </Tab>
-              </tabs>
-               <VBox.margin>
-                  <Insets bottom="5.0" />
-               </VBox.margin>
-            </TabPane>
-            <HBox prefHeight="45.0" prefWidth="398.0">
-               <children>
-                  <TextField prefHeight="26.0" prefWidth="271.0" promptText="Search for a Program ..." />
-                  <HBox prefHeight="26.0" prefWidth="18.0" />
-                  <Button mnemonicParsing="false" text="Add a Program" />
-               </children>
-            </HBox>
-         </children>
-         <BorderPane.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </BorderPane.margin>
-      </VBox>
-   </center>
-   <bottom>
-      <VBox prefHeight="87.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label text="Logs" />
-            <TextArea prefHeight="200.0" prefWidth="200.0" />
-         </children>
-      </VBox>
-   </bottom>
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.github.ferigeek.appdooni.controller.MainController"
+            prefHeight="640.0" prefWidth="960.0">
+    <top>
+        <MenuBar>
+            <menus>
+                <Menu text="File">
+                    <items>
+                        <MenuItem fx:id="importMenuItem" text="Import data" onAction="#onImportData"/>
+                        <MenuItem fx:id="exportMenuItem" text="Export data" onAction="#onExportData"/>
+                        <MenuItem text="Exit" onAction="#onExit"/>
+                    </items>
+                </Menu>
+                <Menu text="Edit">
+                    <items>
+                        <MenuItem text="Add operating system"/>
+                        <MenuItem text="Modify operating system"/>
+                        <MenuItem text="Delete operating system"/>
+                        <MenuItem text="Adding a tag"/>
+                        <MenuItem text="Modify a tag"/>
+                        <MenuItem text="Delete a tag"/>
+                    </items>
+                </Menu>
+                <Menu text="About">
+                    <items>
+                        <MenuItem text="About" onAction="#onAbout"/>
+                        <MenuItem text="Source code" onAction="#onSourceCode"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <right>
+        <VBox BorderPane.alignment="CENTER" minWidth="200.0" prefWidth="220.0" spacing="8.0">
+            <BorderPane.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </BorderPane.margin>
+            <children>
+                <HBox alignment="CENTER_LEFT">
+                    <children>
+                        <Label text="Tags"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="addTagButton" mnemonicParsing="false" text="Add"/>
+                    </children>
+                </HBox>
+                <ToggleButton fx:id="tagFilterToggle" text="OR" minWidth="60.0" maxWidth="60.0"/>
+                <TextField fx:id="tagSearchField" promptText="Search for Tags ..."/>
+                <ListView fx:id="tagListView" VBox.vgrow="ALWAYS"/>
+            </children>
+        </VBox>
+    </right>
+    <center>
+        <VBox BorderPane.alignment="CENTER" spacing="8.0">
+            <BorderPane.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </BorderPane.margin>
+            <children>
+                <TabPane fx:id="osTabPane" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                        <Tab text="All"/>
+                    </tabs>
+                </TabPane>
+                <HBox>
+                    <children>
+                        <TextField fx:id="appSearchField" HBox.hgrow="ALWAYS" promptText="Search for a Program ..."/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="addAppButton" mnemonicParsing="false" text="Add a Program"/>
+                    </children>
+                </HBox>
+                <TableView fx:id="applicationTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="nameColumn" text="Name" prefWidth="160.0"/>
+                        <TableColumn fx:id="osColumn" text="Operating Systems" prefWidth="160.0"/>
+                        <TableColumn fx:id="tagColumn" text="Tags" prefWidth="120.0"/>
+                        <TableColumn fx:id="descriptionColumn" text="Description" prefWidth="220.0"/>
+                        <TableColumn fx:id="sourceColumn" text="Source" prefWidth="160.0"/>
+                        <TableColumn fx:id="websiteColumn" text="Website" prefWidth="160.0"/>
+                    </columns>
+                </TableView>
+            </children>
+        </VBox>
+    </center>
+    <bottom>
+        <VBox BorderPane.alignment="CENTER" spacing="4.0">
+            <BorderPane.margin>
+                <Insets bottom="8.0" left="10.0" right="10.0" top="4.0"/>
+            </BorderPane.margin>
+            <children>
+                <Label text="Logs"/>
+                <TextArea fx:id="logArea" editable="false" wrapText="true" prefHeight="100.0" VBox.vgrow="ALWAYS"/>
+            </children>
+        </VBox>
+    </bottom>
 </BorderPane>
