@@ -177,6 +177,10 @@ public final class MainController {
         filteredTags.setPredicate(tag -> term.isEmpty() || tag.getName().toLowerCase().contains(term));
     }
 
+    /**
+     * Reloads the application table using the current operating system tab,
+     * selected tags with the chosen AND/OR mode, and the free-text search.
+     */
     private void refreshApplications() {
         if (osTabPane.getSelectionModel().getSelectedItem() == null) {
             return;
@@ -209,6 +213,7 @@ public final class MainController {
         refreshApplications();
     }
 
+    /** Opens the details dialog when an application row is double-clicked. */
     @FXML
     private void onApplicationTableClicked(MouseEvent event) {
         if (event.getClickCount() == 2) {

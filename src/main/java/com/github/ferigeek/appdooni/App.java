@@ -18,7 +18,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-configureLogging();
+        configureLogging();
         new DatabaseManager();
 
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("appdooni.fxml"));

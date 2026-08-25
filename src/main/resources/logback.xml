@@ -16,6 +16,8 @@
         </encoder>
     </appender>
 
+    <logger name="org.sqlite" level="INFO"/>
+
     <appender name="TEXTAREA" class="com.github.ferigeek.appdooni.logging.TextAreaAppender"/>
 
     <root level="ALL">
