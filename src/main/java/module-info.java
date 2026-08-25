@@ -10,8 +10,10 @@ module com.github.ferigeek.appdooni {
     requires org.xerial.sqlitejdbc;
     requires org.slf4j;
     requires ch.qos.logback.classic;
+    requires ch.qos.logback.core;
 
     opens com.github.ferigeek.appdooni to javafx.fxml;
     opens com.github.ferigeek.appdooni.controller to javafx.fxml;
+    exports com.github.ferigeek.appdooni.logging to ch.qos.logback.core;
     exports com.github.ferigeek.appdooni;
 }

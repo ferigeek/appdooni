@@ -108,6 +108,8 @@ public final class MainController {
 
     @FXML
     public void initialize() {
+        com.github.ferigeek.appdooni.logging.TextAreaAppender.setTextArea(logArea);
+        loadLogFileIntoArea();
         tagListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tagFilterToggle.setTooltip(new javafx.scene.control.Tooltip(
                 "Match all selected tags (AND) or any (OR). Default OR."));
@@ -717,6 +719,19 @@ public final class MainController {
 
     public void setHostServices(javafx.application.HostServices hostServices) {
         this.hostServices = hostServices;
+    }
+
+    private void loadLogFileIntoArea() {
+        try {
+            java.nio.file.Path logPath = com.github.ferigeek.appdooni.util.AppDirectories.getLogPath();
+            if (java.nio.file.Files.isRegularFile(logPath)) {
+                String content = java.nio.file.Files.readString(logPath);
+                logArea.setText(content);
+                logArea.positionCaret(content.length());
+            }
+        } catch (IOException e) {
+            log.warn("Could not load log file", e);
+        }
     }
 
     private Stage stageOrDefault(ActionEvent event) {

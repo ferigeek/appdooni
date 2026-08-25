@@ -16,8 +16,11 @@
         </encoder>
     </appender>
 
+    <appender name="TEXTAREA" class="com.github.ferigeek.appdooni.logging.TextAreaAppender"/>
+
     <root level="ALL">
         <appender-ref ref="FILE"/>
         <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="TEXTAREA"/>
     </root>
 </configuration>
