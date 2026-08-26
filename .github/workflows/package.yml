@@ -11,16 +11,12 @@ permissions:
 jobs:
   package:
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         include:
           - platform: linux
             arch: amd64
             runner: ubuntu-latest
-            pkg_type: deb
-          - platform: linux
-            arch: arm64
-            runner: ubuntu-24.04-arm
             pkg_type: deb
           - platform: windows
             arch: x64
@@ -45,7 +41,8 @@ jobs:
           if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
             VERSION="${GITHUB_REF#refs/tags/v}"
           else
-            VERSION="0.0.0-dev"
+            echo "::warning::Manual build (no v* tag). Testing only - no release will be created."
+            VERSION="0.0.0-test"
           fi
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "Building version: $VERSION"
@@ -184,7 +181,6 @@ jobs:
         run: |
           EXPECTED_PATTERNS=(
             "AppDooni-*-linux-amd64.deb"
-            "AppDooni-*-linux-arm64.deb"
             "AppDooni-*-windows-x64.msi"
             "AppDooni-*-macos-x64.dmg"
             "AppDooni-*-macos-arm64.dmg"
@@ -203,7 +199,7 @@ jobs:
             exit 1
           fi
 
-          echo "All 5 expected packages verified."
+          echo "All 4 expected packages verified."
 
       - name: Create GitHub Release
         env:
