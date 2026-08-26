@@ -18,6 +18,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.github.ferigeek.appdooni.controller.MainController"
@@ -27,25 +28,47 @@
             <menus>
                 <Menu text="File">
                     <items>
-                        <MenuItem fx:id="importMenuItem" text="Import data" onAction="#onImportData"/>
-                        <MenuItem fx:id="exportMenuItem" text="Export data" onAction="#onExportData"/>
-                        <MenuItem text="Exit" onAction="#onExit"/>
+                        <MenuItem fx:id="importMenuItem" text="Import data" onAction="#onImportData">
+                           <graphic><FontIcon iconLiteral="fas-file-import" iconSize="14"/></graphic>
+                        </MenuItem>
+                        <MenuItem fx:id="exportMenuItem" text="Export data" onAction="#onExportData">
+                           <graphic><FontIcon iconLiteral="fas-file-export" iconSize="14"/></graphic>
+                        </MenuItem>
+                        <MenuItem text="Exit" onAction="#onExit">
+                           <graphic><FontIcon iconLiteral="fas-sign-out-alt" iconSize="14"/></graphic>
+                        </MenuItem>
                     </items>
                 </Menu>
                 <Menu text="Edit">
                     <items>
-                        <MenuItem text="Add operating system" onAction="#onAddOperatingSystem"/>
-                        <MenuItem text="Modify operating system" onAction="#onModifyOperatingSystem"/>
-                        <MenuItem text="Delete operating system" onAction="#onDeleteOperatingSystem"/>
-                        <MenuItem text="Add a tag" onAction="#onAddTag"/>
-                        <MenuItem text="Modify a tag" onAction="#onModifyTag"/>
-                        <MenuItem text="Delete a tag" onAction="#onDeleteTag"/>
+                        <MenuItem text="Add operating system" onAction="#onAddOperatingSystem">
+                           <graphic><FontIcon iconLiteral="fas-plus" iconSize="14"/></graphic>
+                        </MenuItem>
+                        <MenuItem text="Modify operating system" onAction="#onModifyOperatingSystem">
+                           <graphic><FontIcon iconLiteral="fas-pen" iconSize="14"/></graphic>
+                        </MenuItem>
+                        <MenuItem text="Delete operating system" onAction="#onDeleteOperatingSystem">
+                           <graphic><FontIcon iconLiteral="fas-trash" iconSize="14"/></graphic>
+                        </MenuItem>
+                        <MenuItem text="Add a tag" onAction="#onAddTag">
+                           <graphic><FontIcon iconLiteral="fas-tag" iconSize="14"/></graphic>
+                        </MenuItem>
+                        <MenuItem text="Modify a tag" onAction="#onModifyTag">
+                           <graphic><FontIcon iconLiteral="fas-pen" iconSize="14"/></graphic>
+                        </MenuItem>
+                        <MenuItem text="Delete a tag" onAction="#onDeleteTag">
+                           <graphic><FontIcon iconLiteral="fas-trash" iconSize="14"/></graphic>
+                        </MenuItem>
                     </items>
                 </Menu>
                 <Menu text="About">
                     <items>
-                        <MenuItem text="About" onAction="#onAbout"/>
-                        <MenuItem text="Source code" onAction="#onSourceCode"/>
+                        <MenuItem text="About" onAction="#onAbout">
+                           <graphic><FontIcon iconLiteral="fas-info-circle" iconSize="14"/></graphic>
+                        </MenuItem>
+                        <MenuItem text="Source code" onAction="#onSourceCode">
+                           <graphic><FontIcon iconLiteral="fas-code" iconSize="14"/></graphic>
+                        </MenuItem>
                     </items>
                 </Menu>
             </menus>
@@ -59,12 +82,18 @@
             <children>
                 <HBox alignment="CENTER_LEFT">
                     <children>
-                        <Label text="Tags"/>
+                        <Label text="Tags">
+                           <graphic><FontIcon iconLiteral="fas-tag" iconSize="12"/></graphic>
+                        </Label>
                         <Region HBox.hgrow="ALWAYS"/>
-                        <Button fx:id="addTagButton" mnemonicParsing="false" text="Add" onAction="#onAddTag"/>
+                        <Button fx:id="addTagButton" mnemonicParsing="false" text="Add" onAction="#onAddTag">
+                           <graphic><FontIcon iconLiteral="fas-plus" iconSize="12"/></graphic>
+                        </Button>
                     </children>
                 </HBox>
-                <ToggleButton fx:id="tagFilterToggle" text="OR" minWidth="60.0" maxWidth="60.0" onAction="#onTagFilterToggle"/>
+                <ToggleButton fx:id="tagFilterToggle" text="OR" minWidth="60.0" maxWidth="60.0" onAction="#onTagFilterToggle">
+                   <graphic><FontIcon iconLiteral="fas-filter" iconSize="12"/></graphic>
+                </ToggleButton>
                 <TextField fx:id="tagSearchField" promptText="Search for Tags ..."/>
                 <ListView fx:id="tagListView" VBox.vgrow="ALWAYS"/>
             </children>
@@ -85,7 +114,9 @@
                     <children>
                         <TextField fx:id="appSearchField" HBox.hgrow="ALWAYS" promptText="Search for a Program ..."/>
                         <Region HBox.hgrow="ALWAYS"/>
-                        <Button fx:id="addAppButton" mnemonicParsing="false" text="Add a Program" onAction="#onAddApplication"/>
+                        <Button fx:id="addAppButton" mnemonicParsing="false" text="Add a Program" onAction="#onAddApplication">
+                           <graphic><FontIcon iconLiteral="fas-plus" iconSize="12"/></graphic>
+                        </Button>
                     </children>
                 </HBox>
                 <TableView fx:id="applicationTable" VBox.vgrow="ALWAYS" onMouseClicked="#onApplicationTableClicked">
@@ -107,7 +138,9 @@
                 <Insets bottom="8.0" left="10.0" right="10.0" top="4.0"/>
             </BorderPane.margin>
             <children>
-                <Label text="Logs"/>
+                <Label text="Logs">
+                   <graphic><FontIcon iconLiteral="fas-terminal" iconSize="12"/></graphic>
+                </Label>
                 <TextArea fx:id="logArea" editable="false" wrapText="true" prefHeight="100.0" VBox.vgrow="ALWAYS"/>
             </children>
         </VBox>

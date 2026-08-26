@@ -139,8 +139,8 @@ public final class MainController {
 
     private void setupTagContextMenu() {
         ContextMenu contextMenu = new ContextMenu();
-        MenuItem editItem = new MenuItem("Edit");
-        MenuItem deleteItem = new MenuItem("Remove");
+        MenuItem editItem = new MenuItem("Edit", new org.kordamp.ikonli.javafx.FontIcon("fas-pen"));
+        MenuItem deleteItem = new MenuItem("Remove", new org.kordamp.ikonli.javafx.FontIcon("fas-trash"));
         editItem.setOnAction(event -> {
             Tag selected = tagListView.getSelectionModel().getSelectedItem();
             if (selected != null) {
@@ -158,11 +158,11 @@ public final class MainController {
     }
 
     private void loadOperatingSystems() {
-        Tab allTab = new Tab("All");
+        Tab allTab = new Tab("All", new org.kordamp.ikonli.javafx.FontIcon("fas-layer-group"));
         allTab.setUserData(null);
         osTabPane.getTabs().setAll(allTab);
         for (OperatingSystem os : operatingSystemService.listOperatingSystems()) {
-            Tab tab = new Tab(os.getName());
+            Tab tab = new Tab(os.getName(), new org.kordamp.ikonli.javafx.FontIcon("fas-desktop"));
             tab.setUserData(os.getId());
             osTabPane.getTabs().add(tab);
         }
@@ -539,7 +539,7 @@ public final class MainController {
         VBox root = new VBox(10);
         root.setPadding(new Insets(15));
 
-        ToggleButton editToggle = new ToggleButton("Edit");
+        ToggleButton editToggle = new ToggleButton("Edit", new org.kordamp.ikonli.javafx.FontIcon("fas-pen"));
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
@@ -679,12 +679,12 @@ public final class MainController {
         stage.setTitle("About AppDooni");
         VBox box = new VBox(10);
         box.setPadding(new Insets(20));
-        Label title = new Label("AppDooni");
+        Label title = new Label("AppDooni", new org.kordamp.ikonli.javafx.FontIcon("fas-info-circle"));
         title.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
         Label desc = new Label("AppDooni is a desktop application for cataloging applications across operating systems.");
         desc.setWrapText(true);
-        Label author = new Label("Created by ferigeek.");
-        Hyperlink link = new Hyperlink("https://github.com/ferigeek/appdooni");
+        Label author = new Label("Created by ferigeek.", new org.kordamp.ikonli.javafx.FontIcon("fas-user"));
+        Hyperlink link = new Hyperlink("https://github.com/ferigeek/appdooni", new org.kordamp.ikonli.javafx.FontIcon("fas-external-link-alt"));
         link.setOnAction(e -> {
             if (hostServices != null) {
                 hostServices.showDocument("https://github.com/ferigeek/appdooni");

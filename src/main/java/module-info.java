@@ -6,6 +6,8 @@ module com.github.ferigeek.appdooni {
 
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;
+    requires org.kordamp.ikonli.fontawesome5;
+    requires org.kordamp.ikonli.material2;
 
     requires org.xerial.sqlitejdbc;
     requires org.slf4j;
