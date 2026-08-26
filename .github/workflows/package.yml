@@ -29,7 +29,7 @@ jobs:
             pkg_type: msi
           - platform: macos
             arch: x64
-            runner: macos-13
+            runner: macos-15-intel
             pkg_type: dmg
           - platform: macos
             arch: arm64
