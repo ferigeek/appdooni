@@ -4,6 +4,11 @@ on:
   push:
     tags: ['v*']
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Application version (example: 1.0.0). Used for manual testing only; releases are created only from v* tags.'
+        required: true
+        default: '0.0.0'
 
 permissions:
   contents: read
@@ -41,8 +46,8 @@ jobs:
           if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
             VERSION="${GITHUB_REF#refs/tags/v}"
           else
-            echo "::warning::Manual build (no v* tag). Testing only - no release will be created."
-            VERSION="0.0.0-test"
+            VERSION="${{ inputs.version }}"
+            echo "::warning::Manual build with version $VERSION. Testing only - no release will be created."
           fi
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "Building version: $VERSION"
