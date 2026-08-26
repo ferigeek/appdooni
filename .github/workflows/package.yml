@@ -112,7 +112,7 @@ jobs:
             --vendor "ferigeek" \
             --description "AppDooni - Application Catalog" \
             --runtime-image target/app \
-            --main-class com.github.ferigeek.appdooni.Launcher \
+            --module com.github.ferigeek.appdooni/com.github.ferigeek.appdooni.Launcher \
             --dest target/jpackage
 
       - name: Verify and rename package
