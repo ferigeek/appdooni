@@ -16,6 +16,7 @@ module com.github.ferigeek.appdooni {
 
     opens com.github.ferigeek.appdooni to javafx.fxml;
     opens com.github.ferigeek.appdooni.controller to javafx.fxml;
+    opens com.github.ferigeek.appdooni.model to javafx.base;
     exports com.github.ferigeek.appdooni.logging to ch.qos.logback.core;
     exports com.github.ferigeek.appdooni;
 }
