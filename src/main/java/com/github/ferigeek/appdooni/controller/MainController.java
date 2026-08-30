@@ -73,6 +73,7 @@ public final class MainController {
     @FXML private ListView<Tag> tagListView;
     @FXML private TextField tagSearchField;
     @FXML private ToggleButton tagFilterToggle;
+    @FXML private Button clearTagFilterButton;
     @FXML private TextField appSearchField;
     @FXML private TableView<Application> applicationTable;
     @FXML private TableColumn<Application, String> nameColumn;
@@ -113,6 +114,8 @@ public final class MainController {
         tagListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tagFilterToggle.setTooltip(new javafx.scene.control.Tooltip(
                 "Match all selected tags (AND) or any (OR). Default OR."));
+        clearTagFilterButton.disableProperty().bind(
+                javafx.beans.binding.Bindings.isEmpty(tagListView.getSelectionModel().getSelectedItems()));
         filteredTags = new FilteredList<>(allTags, tag -> true);
         tagListView.setItems(filteredTags);
         tagSearchField.textProperty().addListener((observable, oldValue, newValue) -> applyTagFilter(newValue));
@@ -211,6 +214,11 @@ public final class MainController {
     private void onTagFilterToggle(ActionEvent event) {
         tagFilterToggle.setText(tagFilterToggle.isSelected() ? "AND" : "OR");
         refreshApplications();
+    }
+
+    @FXML
+    private void onClearTagFilter(ActionEvent event) {
+        tagListView.getSelectionModel().clearSelection();
     }
 
     /** Opens the details dialog when an application row is double-clicked. */
