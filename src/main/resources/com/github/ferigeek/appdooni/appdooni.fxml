@@ -91,7 +91,7 @@
                         </Button>
                     </children>
                 </HBox>
-                <ToggleButton fx:id="tagFilterToggle" text="OR" minWidth="60.0" maxWidth="60.0" onAction="#onTagFilterToggle">
+                <ToggleButton fx:id="tagFilterToggle" text="OR" minWidth="80.0" maxWidth="80.0" onAction="#onTagFilterToggle">
                    <graphic><FontIcon iconLiteral="fas-filter" iconSize="12"/></graphic>
                 </ToggleButton>
                 <TextField fx:id="tagSearchField" promptText="Search for Tags ..."/>
