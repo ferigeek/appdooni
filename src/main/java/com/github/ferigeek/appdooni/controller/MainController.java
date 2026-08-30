@@ -64,6 +64,8 @@ import java.util.stream.Collectors;
  * Main window controller. Loads operating system tabs, the tag list, and the
  * application table, and keeps the table filtered by the selected operating
  * system tab, the selected tags, the tag match mode, and the search text.
+ * The tag sidebar includes an AND/OR toggle and a Clear button that resets
+ * the tag selection.
  */
 public final class MainController {
 
@@ -73,6 +75,7 @@ public final class MainController {
     @FXML private ListView<Tag> tagListView;
     @FXML private TextField tagSearchField;
     @FXML private ToggleButton tagFilterToggle;
+    /** Clear button that removes all selected tags; disabled when no tags are selected. */
     @FXML private Button clearTagFilterButton;
     @FXML private TextField appSearchField;
     @FXML private TableView<Application> applicationTable;
@@ -114,6 +117,7 @@ public final class MainController {
         tagListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tagFilterToggle.setTooltip(new javafx.scene.control.Tooltip(
                 "Match all selected tags (AND) or any (OR). Default OR."));
+        // Clear is disabled when no tags are selected; clearing triggers refresh via list-change listener.
         clearTagFilterButton.disableProperty().bind(
                 javafx.beans.binding.Bindings.isEmpty(tagListView.getSelectionModel().getSelectedItems()));
         filteredTags = new FilteredList<>(allTags, tag -> true);
@@ -216,6 +220,10 @@ public final class MainController {
         refreshApplications();
     }
 
+    /**
+     * Clears all selected tags in the tag list. The existing list-change listener
+     * on the selected items triggers {@link #refreshApplications()} automatically.
+     */
     @FXML
     private void onClearTagFilter(ActionEvent event) {
         tagListView.getSelectionModel().clearSelection();
