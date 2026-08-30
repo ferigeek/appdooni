@@ -693,6 +693,13 @@ public final class MainController {
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("About AppDooni");
+        try (var iconStream = MainController.class.getResourceAsStream("/com/github/ferigeek/appdooni/appdooni.png")) {
+            if (iconStream != null) {
+                stage.getIcons().add(new javafx.scene.image.Image(iconStream));
+            }
+        } catch (IOException e) {
+            log.warn("Could not load application icon for About window", e);
+        }
         VBox box = new VBox(10);
         box.setPadding(new Insets(20));
         Label title = new Label("AppDooni", new org.kordamp.ikonli.javafx.FontIcon("fas-info-circle"));

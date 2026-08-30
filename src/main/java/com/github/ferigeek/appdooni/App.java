@@ -6,9 +6,11 @@ import com.github.ferigeek.appdooni.util.AppDirectories;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Entry point of the JavaFX application. Initializes logging and the database,
@@ -24,6 +26,11 @@ public class App extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("appdooni.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 960, 640);
         stage.setTitle("AppDooni");
+        try (InputStream iconStream = App.class.getResourceAsStream("appdooni.png")) {
+            if (iconStream != null) {
+                stage.getIcons().add(new Image(iconStream));
+            }
+        }
         stage.setScene(scene);
         stage.show();
 
