@@ -18,7 +18,7 @@
       - source code: goes to the GitHub repository (`https://github.com/ferigeek/appdooni`)
   - Right: Tag section including some sections on top of each other
     - Tag label and add button to add a tag right in front of the label. The button should be the right side of the section, and the label the left side.
-    - A toggle to switch the tag filtering between `AND` (application must match all selected tags) and `OR` (application must match at least one selected tag). It is set to `OR` by default.
+    - A toggle to switch the tag filtering between `AND` (application must match all selected tags) and `OR` (application must match at least one selected tag). It is set to `OR` by default. Next to the toggle, a Clear button clears all selected tags in one click; it is disabled when no tags are selected.
     - Search field to search for tags
     - List of tags which you can choose any, one or more, to filter the list of the applications shown.
   - Center: The application section
