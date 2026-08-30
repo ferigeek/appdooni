@@ -107,15 +107,93 @@ jobs:
       - name: Run jpackage
         shell: bash
         run: |
-          jpackage \
-            --type "${{ matrix.pkg_type }}" \
-            --name AppDooni \
-            --app-version "${{ steps.version.outputs.version }}" \
-            --vendor "ferigeek" \
-            --description "AppDooni - Application Catalog" \
-            --runtime-image target/app \
-            --module com.github.ferigeek.appdooni/com.github.ferigeek.appdooni.Launcher \
+          JPACKAGE_ARGS=(
+            --type "${{ matrix.pkg_type }}"
+            --name AppDooni
+            --app-version "${{ steps.version.outputs.version }}"
+            --vendor "ferigeek"
+            --description "AppDooni - Application Catalog"
+            --runtime-image target/app
+            --module com.github.ferigeek.appdooni/com.github.ferigeek.appdooni.Launcher
             --dest target/jpackage
+          )
+          if [[ "${{ matrix.platform }}" == "linux" ]]; then
+            JPACKAGE_ARGS+=(--linux-shortcut --linux-menu-group "Utilities" --icon packaging/appdooni.png)
+          fi
+          echo "Running jpackage with args: ${JPACKAGE_ARGS[*]}"
+          jpackage "${JPACKAGE_ARGS[@]}"
+
+      - name: Verify Linux desktop entry
+        if: matrix.platform == 'linux'
+        shell: bash
+        run: |
+          DEB=$(find target/jpackage -maxdepth 1 -type f -name "*.deb" | head -1)
+          if [ -z "$DEB" ]; then
+            echo "::error::No .deb found for Linux desktop verification"
+            exit 1
+          fi
+          echo "Checking $DEB for .desktop entry..."
+          dpkg-deb --contents "$DEB" | tee /tmp/deb-contents.txt
+          if ! grep -q "\.desktop" /tmp/deb-contents.txt; then
+            echo "::error::No .desktop entry found in $DEB"
+            exit 1
+          fi
+          echo "Found .desktop entries in deb data:"
+          grep "\.desktop" /tmp/deb-contents.txt
+
+          # jpackage deb stores desktop in /opt/<name>/lib/*.desktop and installs via xdg-desktop-menu in postinst
+          # Verify postinst installs to /usr/share/applications
+          echo "Checking postinst for xdg-desktop-menu..."
+          if ! dpkg-deb --ctrl-tarfile "$DEB" | tar -O -x ./postinst 2>/dev/null | grep -q "xdg-desktop-menu.*install"; then
+            echo "::warning::postinst does not contain xdg-desktop-menu install (desktop may still be in data)"
+            # Fallback: check data directly under /usr/share/applications
+            if ! grep -q "usr/share/applications/.*\\.desktop" /tmp/deb-contents.txt; then
+              echo "::error::Neither postinst xdg install nor direct /usr/share/applications entry found"
+              exit 1
+            fi
+          else
+            echo "postinst installs desktop via xdg-desktop-menu (will appear under /usr/share/applications after install)"
+            dpkg-deb --ctrl-tarfile "$DEB" | tar -O -x ./postinst | grep "xdg-desktop-menu"
+          fi
+
+          TMPDIR=$(mktemp -d)
+          dpkg-deb --extract "$DEB" "$TMPDIR"
+          DESKTOP=$(find "$TMPDIR" -name "*.desktop" | head -1)
+          if [ -z "$DESKTOP" ]; then
+            echo "::error::Could not extract .desktop file from $DEB"
+            rm -rf "$TMPDIR"
+            exit 1
+          fi
+          echo "Desktop file: $DESKTOP"
+          cat "$DESKTOP"
+          echo "---"
+          if ! grep -qi "^Icon=" "$DESKTOP"; then
+            echo "::error::Desktop entry missing Icon field"
+            rm -rf "$TMPDIR"
+            exit 1
+          fi
+          echo "Icon field:"
+          grep -i "^Icon=" "$DESKTOP"
+          if ! grep -qi "^Icon=.*AppDooni" "$DESKTOP"; then
+            echo "::error::Icon field does not reference AppDooni (expected Icon=AppDooni)"
+            rm -rf "$TMPDIR"
+            exit 1
+          fi
+          if grep -qi "^Categories=.*Utilities" "$DESKTOP"; then
+            echo "Menu group Utilities verified via Categories=Utilities"
+          else
+            echo "::warning::Categories does not contain Utilities"
+          fi
+          # Verify icon file exists in package
+          if ! grep -q "AppDooni.png" /tmp/deb-contents.txt; then
+            echo "::error::Icon png not found in deb package"
+            rm -rf "$TMPDIR"
+            exit 1
+          fi
+          echo "Icon file in package:"
+          grep "AppDooni.png" /tmp/deb-contents.txt
+          rm -rf "$TMPDIR"
+          echo "Linux desktop entry verification passed — will appear under /usr/share/applications/ after install."
 
       - name: Verify and rename package
         id: pkg
