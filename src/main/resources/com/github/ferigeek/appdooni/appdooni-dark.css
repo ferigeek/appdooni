@@ -1,0 +1,283 @@
+/**
+ * AppDooni dark theme ("Closed stacks").
+ *
+ * Mirrors the light theme selectors with forest-black shelves, warm paper
+ * text, and a single brass accent. Keeps the same hierarchy, radii, and
+ * typographic roles so switching themes never moves layout.
+ */
+
+.root {
+    -fx-background-color: #161916;
+    -fx-text-fill: #E6E2D5;
+    -fx-font-family: "System", "Segoe UI", "Inter", "Roboto", sans-serif;
+    -fx-font-size: 13px;
+    -fx-focus-color: #C2A257;
+    -fx-faint-focus-color: #C2A25733;
+}
+
+.app-shell {
+    -fx-background-color: #161916;
+}
+
+/* Thin menu bar with a ledger rule below it. */
+.menu-bar {
+    -fx-background-color: #1F241F;
+    -fx-border-color: transparent transparent #9A958A44 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.menu-bar .label {
+    -fx-text-fill: #E6E2D5;
+}
+
+.menu-item .label {
+    -fx-text-fill: #E6E2D5;
+}
+
+/* Content panels sit flat on the dark shelf; rules separate jobs, no shadows. */
+.catalog-pane,
+.tag-pane,
+.ledger-pane {
+    -fx-background-color: #1F241F;
+    -fx-background-radius: 8;
+    -fx-border-color: #9A958A44;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+}
+
+.pane-title {
+    -fx-font-family: "Iowan Old Style", "Palatino Linotype", "Palatino", "Georgia", serif;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #E6E2D5;
+}
+
+.pane-hint {
+    -fx-text-fill: #9A958A;
+    -fx-font-size: 12px;
+}
+
+/* OS tabs styled as library index dividers: serif label, brass spine when selected. */
+.os-tabs .tab-header-area .tab-header-background {
+    -fx-background-color: transparent;
+}
+
+.os-tabs .tab {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent transparent transparent;
+    -fx-border-width: 0 0 0 3;
+    -fx-padding: 6 12 6 9;
+}
+
+.os-tabs .tab .tab-label {
+    -fx-font-family: "Iowan Old Style", "Palatino Linotype", "Palatino", "Georgia", serif;
+    -fx-font-size: 14px;
+    -fx-text-fill: #9A958A;
+}
+
+.os-tabs .tab:selected {
+    -fx-background-color: #C2A2571F;
+    -fx-border-color: transparent transparent transparent #C2A257;
+}
+
+.os-tabs .tab:selected .tab-label {
+    -fx-text-fill: #E6E2D5;
+    -fx-font-weight: bold;
+}
+
+/* Catalog table: ruled rows, serif app name, quiet header. */
+.catalog-table {
+    -fx-background-color: #1F241F;
+    -fx-border-color: #9A958A44;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+}
+
+.catalog-table .column-header-background {
+    -fx-background-color: #161916;
+}
+
+.catalog-table .column-header .label {
+    -fx-text-fill: #9A958A;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+.catalog-table .table-row-cell {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #9A958A2E transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.catalog-table .table-row-cell .text {
+    -fx-fill: #E6E2D5;
+}
+
+.catalog-table .table-row-cell:selected {
+    -fx-background-color: #C2A25726;
+}
+
+.catalog-table .table-row-cell:selected .text {
+    -fx-fill: #E6E2D5;
+}
+
+.app-name-cell {
+    -fx-font-family: "Iowan Old Style", "Palatino Linotype", "Palatino", "Georgia", serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.mono-cell {
+    -fx-font-family: "JetBrains Mono", "Consolas", "Menlo", monospace;
+    -fx-font-size: 12px;
+}
+
+/* Stamp chips for operating systems and tags inside table cells. */
+.pill {
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+    -fx-padding: 1 7 1 7;
+    -fx-font-size: 12px;
+}
+
+.pill-os {
+    -fx-background-color: transparent;
+    -fx-border-color: #9A958A88;
+    -fx-text-fill: #E6E2D5;
+}
+
+.pill-tag {
+    -fx-background-color: #C2A2571F;
+    -fx-border-color: #C2A25777;
+    -fx-text-fill: #C2A257;
+}
+
+/* Tag sidebar list with chip-like selected rows. */
+.tag-list {
+    -fx-background-color: #1F241F;
+    -fx-border-color: #9A958A44;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+}
+
+.tag-list .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #E6E2D5;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-padding: 4 8 4 8;
+}
+
+.tag-list .list-cell:selected {
+    -fx-background-color: #C2A25726;
+    -fx-border-color: #C2A25777;
+    -fx-border-width: 1;
+    -fx-text-fill: #E6E2D5;
+}
+
+/* Inputs and buttons. */
+.search-field,
+.text-field,
+.text-area,
+.check-combo-box {
+    -fx-background-color: #161916;
+    -fx-border-color: #9A958A55;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-text-fill: #E6E2D5;
+    -fx-prompt-text-fill: #9A958A;
+}
+
+.text-field:focused,
+.text-area:focused {
+    -fx-border-color: #C2A257;
+}
+
+.button,
+.toggle-button {
+    -fx-background-color: #2A302A;
+    -fx-border-color: #9A958A55;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-text-fill: #E6E2D5;
+}
+
+.button:hover,
+.toggle-button:hover {
+    -fx-border-color: #C2A257;
+}
+
+.button:focused,
+.toggle-button:focused {
+    -fx-border-color: #C2A257;
+}
+
+.button.primary {
+    -fx-background-color: #C2A257;
+    -fx-border-color: #C2A257;
+    -fx-text-fill: #161916;
+    -fx-font-weight: bold;
+}
+
+.button.primary .ikonli-font-icon {
+    -fx-fill: #161916;
+}
+
+.button.danger {
+    -fx-border-color: #D0806A88;
+    -fx-text-fill: #D0806A;
+}
+
+.button.danger:hover {
+    -fx-background-color: #D0806A;
+    -fx-text-fill: #161916;
+}
+
+.toggle-button:selected {
+    -fx-background-color: #C2A257;
+    -fx-border-color: #C2A257;
+    -fx-text-fill: #161916;
+}
+
+.ikonli-font-icon {
+    -fx-fill: #9A958A;
+}
+
+.button.primary .ikonli-font-icon,
+.toggle-button:selected .ikonli-font-icon {
+    -fx-fill: #161916;
+}
+
+/* Ledger log strip: recessed, mono, quiet. */
+.log-pane {
+    -fx-font-family: "JetBrains Mono", "Consolas", "Menlo", monospace;
+    -fx-font-size: 12px;
+    -fx-text-fill: #E6E2D5;
+}
+
+.log-pane .content {
+    -fx-background-color: #121412;
+}
+
+/* Dialogs inherit the shelf background. */
+.dialog-pane {
+    -fx-background-color: #1F241F;
+}
+
+.dialog-pane .header-panel {
+    -fx-background-color: #161916;
+}
+
+.dialog-pane .header-panel .label {
+    -fx-font-family: "Iowan Old Style", "Palatino Linotype", "Palatino", "Georgia", serif;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #E6E2D5;
+}
+
+.dialog-pane .content .label {
+    -fx-text-fill: #E6E2D5;
+}
