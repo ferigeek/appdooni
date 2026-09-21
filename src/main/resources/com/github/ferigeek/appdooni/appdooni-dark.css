@@ -274,11 +274,12 @@
 }
 
 .ikonli-font-icon {
-    -fx-fill: #9A958A;
+    -fx-fill: #E6E2D5;
 }
 
 .button.primary .ikonli-font-icon,
-.toggle-button:selected .ikonli-font-icon {
+.toggle-button:selected .ikonli-font-icon,
+.toggle-button.os-tab:selected .ikonli-font-icon {
     -fx-fill: #161916;
 }
 
