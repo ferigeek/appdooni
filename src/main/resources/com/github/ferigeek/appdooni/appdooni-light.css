@@ -44,6 +44,7 @@
     -fx-border-color: #6B675E55;
     -fx-border-width: 1;
     -fx-border-radius: 8;
+    -fx-padding: 12;
 }
 
 .pane-title {
@@ -185,6 +186,7 @@
     -fx-background-radius: 6;
     -fx-text-fill: #201F1B;
     -fx-prompt-text-fill: #6B675E;
+    -fx-padding: 5 9 5 9;
 }
 
 .text-field:focused,
@@ -200,6 +202,7 @@
     -fx-border-radius: 6;
     -fx-background-radius: 6;
     -fx-text-fill: #201F1B;
+    -fx-padding: 5 12 5 12;
 }
 
 .button:hover,
