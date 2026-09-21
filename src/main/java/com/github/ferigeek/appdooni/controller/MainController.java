@@ -36,6 +36,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -44,6 +45,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -133,6 +135,7 @@ public final class MainController {
         websiteColumn.setCellValueFactory(new PropertyValueFactory<>("websiteUrl"));
         osColumn.setCellValueFactory(cell -> joinOperatingSystems(cell.getValue()));
         tagColumn.setCellValueFactory(cell -> joinTags(cell.getValue()));
+        setupCatalogCells();
         applicationTable.setItems(applications);
 
         osTabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> refreshApplications());
@@ -165,6 +168,88 @@ public final class MainController {
         });
         contextMenu.getItems().addAll(editItem, deleteItem);
         tagListView.setContextMenu(contextMenu);
+    }
+
+    /**
+     * Applies the catalog type roles to the application table: serif names,
+     * stamp chips for operating systems and tags, and mono for literal
+     * source and website values.
+     */
+    private void setupCatalogCells() {
+        nameColumn.setCellFactory(column -> styledTextCell("app-name-cell"));
+        sourceColumn.setCellFactory(column -> styledTextCell("mono-cell"));
+        websiteColumn.setCellFactory(column -> styledTextCell("mono-cell"));
+        osColumn.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || getIndex() < 0 || getIndex() >= getTableView().getItems().size()) {
+                    setGraphic(null);
+                } else {
+                    Application app = getTableView().getItems().get(getIndex());
+                    setGraphic(pillBox(
+                            app.getOperatingSystems().stream()
+                                    .map(OperatingSystem::getName).toList(),
+                            "pill-os"));
+                }
+            }
+        });
+        tagColumn.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || getIndex() < 0 || getIndex() >= getTableView().getItems().size()) {
+                    setGraphic(null);
+                } else {
+                    Application app = getTableView().getItems().get(getIndex());
+                    setGraphic(pillBox(
+                            app.getTags().stream().map(Tag::getName).toList(),
+                            "pill-tag"));
+                }
+            }
+        });
+    }
+
+    private TableCell<Application, String> styledTextCell(String styleClass) {
+        return new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (!getStyleClass().contains(styleClass)) {
+                    getStyleClass().add(styleClass);
+                }
+                setText(empty ? null : item);
+            }
+        };
+    }
+
+    private FlowPane pillBox(java.util.List<String> values, String pillClass) {
+        FlowPane pane = new FlowPane(4, 2);
+        for (String value : values) {
+            Label pill = new Label(value);
+            pill.getStyleClass().addAll("pill", pillClass);
+            pane.getChildren().add(pill);
+        }
+        return pane;
+    }
+
+    /**
+     * Attaches the active theme stylesheet to a dialog so dialogs match the
+     * main window instead of falling back to unstyled Modena.
+     */
+    private void styleDialog(Dialog<?> dialog) {
+        String stylesheet = com.github.ferigeek.appdooni.App.stylesheetFor(
+                com.github.ferigeek.appdooni.App.currentTheme());
+        if (stylesheet != null
+                && !dialog.getDialogPane().getStylesheets().contains(stylesheet)) {
+            dialog.getDialogPane().getStylesheets().add(stylesheet);
+        }
+    }
+
+    private void markDanger(Button button) {
+        if (button != null && !button.getStyleClass().contains("danger")) {
+            button.getStyleClass().add("danger");
+        }
     }
 
     private void loadOperatingSystems() {
@@ -283,6 +368,7 @@ public final class MainController {
         dialog.setTitle("Add Tag");
         dialog.setHeaderText("Enter tag name");
         dialog.setContentText("Name:");
+        styleDialog(dialog);
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(name -> {
             try {
@@ -307,6 +393,7 @@ public final class MainController {
         choice.setTitle("Modify Tag");
         choice.setHeaderText("Select a tag to modify");
         choice.setContentText("Tag:");
+        styleDialog(choice);
         Optional<Tag> selected = choice.showAndWait();
         selected.ifPresent(this::editTag);
     }
@@ -316,6 +403,7 @@ public final class MainController {
         dialog.setTitle("Modify Tag");
         dialog.setHeaderText("Enter new name for '" + tag.getName() + "'");
         dialog.setContentText("Name:");
+        styleDialog(dialog);
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(newName -> {
             String oldName = tag.getName();
@@ -343,6 +431,8 @@ public final class MainController {
         confirm.setTitle("Delete Tag");
         confirm.setHeaderText("Delete tag '" + tag.getName() + "'?");
         confirm.setContentText("Applications that had this tag will remain.");
+        styleDialog(confirm);
+        markDanger((Button) confirm.getDialogPane().lookupButton(ButtonType.OK));
         Optional<ButtonType> result = confirm.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             tagService.deleteTag(tag.getId());
@@ -369,6 +459,8 @@ public final class MainController {
         deleteButton.setDisable(true);
         listView.getSelectionModel().selectedItemProperty().addListener((obs, oldV, newV) -> deleteButton.setDisable(newV == null));
         dialog.setResultConverter(button -> button == deleteType ? listView.getSelectionModel().getSelectedItem() : null);
+        styleDialog(dialog);
+        markDanger(deleteButton);
         Optional<Tag> result = dialog.showAndWait();
         result.ifPresent(this::deleteSingleTag);
     }
@@ -379,6 +471,7 @@ public final class MainController {
         dialog.setTitle("Add Operating System");
         dialog.setHeaderText("Enter operating system name");
         dialog.setContentText("Name:");
+        styleDialog(dialog);
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(name -> {
             try {
@@ -404,6 +497,7 @@ public final class MainController {
         choice.setTitle("Modify Operating System");
         choice.setHeaderText("Select an operating system to modify");
         choice.setContentText("Operating system:");
+        styleDialog(choice);
         Optional<OperatingSystem> selected = choice.showAndWait();
         selected.ifPresent(this::editOperatingSystem);
     }
@@ -413,6 +507,7 @@ public final class MainController {
         dialog.setTitle("Modify Operating System");
         dialog.setHeaderText("Enter new name for '" + os.getName() + "'");
         dialog.setContentText("Name:");
+        styleDialog(dialog);
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(newName -> {
             String oldName = os.getName();
@@ -453,6 +548,8 @@ public final class MainController {
         deleteButton.setDisable(true);
         listView.getSelectionModel().selectedItemProperty().addListener((obs, oldV, newV) -> deleteButton.setDisable(newV == null));
         dialog.setResultConverter(button -> button == deleteType ? listView.getSelectionModel().getSelectedItem() : null);
+        styleDialog(dialog);
+        markDanger(deleteButton);
         Optional<OperatingSystem> result = dialog.showAndWait();
         result.ifPresent(this::deleteSingleOperatingSystem);
     }
@@ -463,6 +560,8 @@ public final class MainController {
         confirm.setHeaderText("Delete operating system '" + os.getName() + "'?");
         confirm.setContentText("Applications available only for this operating system will be deleted. "
                 + "Others will keep their remaining operating systems.");
+        styleDialog(confirm);
+        markDanger((Button) confirm.getDialogPane().lookupButton(ButtonType.OK));
         Optional<ButtonType> result = confirm.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             operatingSystemService.deleteOperatingSystem(os.getId());
@@ -475,6 +574,7 @@ public final class MainController {
     @FXML
     private void onAddApplication(ActionEvent event) {
         Dialog<Application> dialog = createApplicationDialog(null);
+        styleDialog(dialog);
         Optional<Application> result = dialog.showAndWait();
         result.ifPresent(app -> {
             log.info("Added application '{}'", app.getName());
@@ -486,6 +586,7 @@ public final class MainController {
         // Reload to get fresh associations
         Application fresh = applicationService.findApplication(application.getId()).orElse(application);
         Dialog<Application> dialog = createApplicationDetailsDialog(fresh);
+        styleDialog(dialog);
         Optional<Application> result = dialog.showAndWait();
         result.ifPresent(updated -> {
             log.info("Updated application '{}'", updated.getName());
@@ -581,6 +682,7 @@ public final class MainController {
             }
         });
 
+        styleDialog(dialog);
         return dialog;
     }
 
@@ -669,6 +771,7 @@ public final class MainController {
             }
         });
 
+        styleDialog(dialog);
         return dialog;
     }
 
@@ -740,7 +843,7 @@ public final class MainController {
         VBox box = new VBox(10);
         box.setPadding(new Insets(20));
         Label title = new Label("AppDooni", new org.kordamp.ikonli.javafx.FontIcon("fas-info-circle"));
-        title.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+        title.getStyleClass().add("pane-title");
         Label desc = new Label("AppDooni is a desktop application for cataloging applications across operating systems.");
         desc.setWrapText(true);
         Label author = new Label("Created by ferigeek.", new org.kordamp.ikonli.javafx.FontIcon("fas-user"));
@@ -751,7 +854,13 @@ public final class MainController {
             }
         });
         box.getChildren().addAll(title, desc, author, link);
-        stage.setScene(new Scene(box, 420, 180));
+        Scene aboutScene = new Scene(box, 420, 180);
+        String aboutStylesheet = com.github.ferigeek.appdooni.App.stylesheetFor(
+                com.github.ferigeek.appdooni.App.currentTheme());
+        if (aboutStylesheet != null) {
+            aboutScene.getStylesheets().add(aboutStylesheet);
+        }
+        stage.setScene(aboutScene);
         stage.showAndWait();
     }
 
@@ -773,6 +882,7 @@ public final class MainController {
         ButtonType overwrite = new ButtonType("Overwrite");
         ButtonType keepBoth = new ButtonType("Keep both");
         alert.getButtonTypes().setAll(skip, overwrite, keepBoth);
+        styleDialog(alert);
         return switch (alert.showAndWait().orElse(skip).getText()) {
             case "Skip" -> ImportAction.SKIP;
             case "Overwrite" -> ImportAction.OVERWRITE;
@@ -811,6 +921,7 @@ public final class MainController {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
+        styleDialog(alert);
         alert.showAndWait();
     }
 
@@ -819,6 +930,7 @@ public final class MainController {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
+        styleDialog(alert);
         alert.showAndWait();
     }
 }
