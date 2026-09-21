@@ -3,6 +3,7 @@ module com.github.ferigeek.appdooni {
     requires javafx.fxml;
 
     requires java.sql;
+    requires java.prefs;
 
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;
