@@ -130,10 +130,9 @@
                         <Tab text="All"/>
                     </tabs>
                 </TabPane>
-                <HBox>
+                <HBox spacing="8.0">
                     <children>
                         <TextField fx:id="appSearchField" HBox.hgrow="ALWAYS" promptText="Search for a Program ..." styleClass="search-field"/>
-                        <Region HBox.hgrow="ALWAYS"/>
                         <Button fx:id="addAppButton" mnemonicParsing="false" styleClass="primary" text="Add a Program" onAction="#onAddApplication">
                            <graphic><FontIcon iconLiteral="fas-plus" iconSize="12"/></graphic>
                         </Button>
