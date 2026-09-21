@@ -105,6 +105,14 @@
     -fx-font-size: 12px;
 }
 
+.catalog-table .column-header {
+    -fx-padding: 4 6 4 6;
+}
+
+.catalog-table .table-cell {
+    -fx-padding: 3 6 3 6;
+}
+
 .catalog-table .table-row-cell {
     -fx-background-color: transparent;
     -fx-border-color: transparent transparent #6B675E30 transparent;
@@ -122,12 +130,12 @@
 .app-name-cell {
     -fx-font-family: "Iowan Old Style", "Palatino Linotype", "Palatino", "Georgia", serif;
     -fx-font-weight: bold;
-    -fx-font-size: 14px;
+    -fx-font-size: 13px;
 }
 
 .mono-cell {
     -fx-font-family: "JetBrains Mono", "Consolas", "Menlo", monospace;
-    -fx-font-size: 12px;
+    -fx-font-size: 11px;
 }
 
 /* Stamp chips for operating systems and tags inside table cells. */
@@ -135,8 +143,8 @@
     -fx-background-radius: 6;
     -fx-border-radius: 6;
     -fx-border-width: 1;
-    -fx-padding: 1 7 1 7;
-    -fx-font-size: 12px;
+    -fx-padding: 0 6 0 6;
+    -fx-font-size: 11px;
 }
 
 .pill-os {

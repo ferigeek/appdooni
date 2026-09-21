@@ -136,6 +136,7 @@ public final class MainController {
         osColumn.setCellValueFactory(cell -> joinOperatingSystems(cell.getValue()));
         tagColumn.setCellValueFactory(cell -> joinTags(cell.getValue()));
         setupCatalogCells();
+        applicationTable.setFixedCellSize(28);
         applicationTable.setItems(applications);
 
         osTabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> refreshApplications());
@@ -173,7 +174,7 @@ public final class MainController {
     /**
      * Applies the catalog type roles to the application table: serif names,
      * stamp chips for operating systems and tags, and mono for literal
-     * source and website values.
+     * source and website values. Rows use a fixed compact height.
      */
     private void setupCatalogCells() {
         nameColumn.setCellFactory(column -> styledTextCell("app-name-cell"));
@@ -224,7 +225,7 @@ public final class MainController {
     }
 
     private FlowPane pillBox(java.util.List<String> values, String pillClass) {
-        FlowPane pane = new FlowPane(4, 2);
+        FlowPane pane = new FlowPane(3, 1);
         for (String value : values) {
             Label pill = new Label(value);
             pill.getStyleClass().addAll("pill", pillClass);
