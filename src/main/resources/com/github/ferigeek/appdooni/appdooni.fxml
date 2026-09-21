@@ -13,7 +13,9 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
@@ -22,7 +24,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.github.ferigeek.appdooni.controller.MainController"
-            prefHeight="640.0" prefWidth="960.0">
+            prefHeight="640.0" prefWidth="960.0" styleClass="app-shell">
     <top>
         <MenuBar>
             <menus>
@@ -61,6 +63,16 @@
                         </MenuItem>
                     </items>
                 </Menu>
+                <Menu text="View">
+                    <items>
+                        <RadioMenuItem fx:id="lightThemeItem" text="Light" onAction="#onLightTheme">
+                           <graphic><FontIcon iconLiteral="fas-sun" iconSize="14"/></graphic>
+                        </RadioMenuItem>
+                        <RadioMenuItem fx:id="darkThemeItem" text="Dark" onAction="#onDarkTheme">
+                           <graphic><FontIcon iconLiteral="fas-moon" iconSize="14"/></graphic>
+                        </RadioMenuItem>
+                    </items>
+                </Menu>
                 <Menu text="About">
                     <items>
                         <MenuItem text="About" onAction="#onAbout">
@@ -75,18 +87,18 @@
         </MenuBar>
     </top>
     <right>
-        <VBox BorderPane.alignment="CENTER" minWidth="200.0" prefWidth="220.0" spacing="8.0">
+        <VBox styleClass="tag-pane" BorderPane.alignment="CENTER" minWidth="200.0" prefWidth="220.0" spacing="8.0">
             <BorderPane.margin>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
             </BorderPane.margin>
             <children>
                 <HBox alignment="CENTER_LEFT">
                     <children>
-                        <Label text="Tags">
+                        <Label styleClass="pane-title" text="Tags">
                            <graphic><FontIcon iconLiteral="fas-tag" iconSize="12"/></graphic>
                         </Label>
                         <Region HBox.hgrow="ALWAYS"/>
-                        <Button fx:id="addTagButton" mnemonicParsing="false" text="Add" onAction="#onAddTag">
+                        <Button fx:id="addTagButton" mnemonicParsing="false" styleClass="primary" text="Add" onAction="#onAddTag">
                            <graphic><FontIcon iconLiteral="fas-plus" iconSize="12"/></graphic>
                         </Button>
                     </children>
@@ -102,32 +114,32 @@
                         </Button>
                     </children>
                 </HBox>
-                <TextField fx:id="tagSearchField" promptText="Search for Tags ..."/>
-                <ListView fx:id="tagListView" VBox.vgrow="ALWAYS"/>
+                <TextField fx:id="tagSearchField" promptText="Search for Tags ..." styleClass="search-field"/>
+                <ListView fx:id="tagListView" styleClass="tag-list" VBox.vgrow="ALWAYS"/>
             </children>
         </VBox>
     </right>
     <center>
-        <VBox BorderPane.alignment="CENTER" spacing="8.0">
+        <VBox styleClass="catalog-pane" BorderPane.alignment="CENTER" spacing="8.0">
             <BorderPane.margin>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
             </BorderPane.margin>
             <children>
-                <TabPane fx:id="osTabPane" tabClosingPolicy="UNAVAILABLE">
+                <TabPane fx:id="osTabPane" styleClass="os-tabs" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
                         <Tab text="All"/>
                     </tabs>
                 </TabPane>
                 <HBox>
                     <children>
-                        <TextField fx:id="appSearchField" HBox.hgrow="ALWAYS" promptText="Search for a Program ..."/>
+                        <TextField fx:id="appSearchField" HBox.hgrow="ALWAYS" promptText="Search for a Program ..." styleClass="search-field"/>
                         <Region HBox.hgrow="ALWAYS"/>
-                        <Button fx:id="addAppButton" mnemonicParsing="false" text="Add a Program" onAction="#onAddApplication">
+                        <Button fx:id="addAppButton" mnemonicParsing="false" styleClass="primary" text="Add a Program" onAction="#onAddApplication">
                            <graphic><FontIcon iconLiteral="fas-plus" iconSize="12"/></graphic>
                         </Button>
                     </children>
                 </HBox>
-                <TableView fx:id="applicationTable" VBox.vgrow="ALWAYS" onMouseClicked="#onApplicationTableClicked">
+                <TableView fx:id="applicationTable" styleClass="catalog-table" VBox.vgrow="ALWAYS" onMouseClicked="#onApplicationTableClicked">
                     <columns>
                         <TableColumn fx:id="nameColumn" text="Name" prefWidth="160.0"/>
                         <TableColumn fx:id="osColumn" text="Operating Systems" prefWidth="160.0"/>
@@ -141,15 +153,15 @@
         </VBox>
     </center>
     <bottom>
-        <VBox BorderPane.alignment="CENTER" spacing="4.0">
+        <VBox styleClass="ledger-pane" BorderPane.alignment="CENTER" spacing="4.0">
             <BorderPane.margin>
                 <Insets bottom="8.0" left="10.0" right="10.0" top="4.0"/>
             </BorderPane.margin>
             <children>
-                <Label text="Logs">
+                <Label styleClass="pane-title" text="Logs">
                    <graphic><FontIcon iconLiteral="fas-terminal" iconSize="12"/></graphic>
                 </Label>
-                <TextArea fx:id="logArea" editable="false" wrapText="true" prefHeight="100.0" VBox.vgrow="ALWAYS"/>
+                <TextArea fx:id="logArea" editable="false" wrapText="true" prefHeight="100.0" styleClass="log-pane" VBox.vgrow="ALWAYS"/>
             </children>
         </VBox>
     </bottom>
