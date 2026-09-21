@@ -260,7 +260,8 @@ public final class MainController {
 
     /**
      * Attaches the active theme stylesheet to a dialog so dialogs match the
-     * main window instead of falling back to unstyled Modena.
+     * main window instead of falling back to unstyled Modena, and plays the
+     * single card-pull entrance.
      */
     private void styleDialog(Dialog<?> dialog) {
         String stylesheet = com.github.ferigeek.appdooni.App.stylesheetFor(
@@ -269,6 +270,7 @@ public final class MainController {
                 && !dialog.getDialogPane().getStylesheets().contains(stylesheet)) {
             dialog.getDialogPane().getStylesheets().add(stylesheet);
         }
+        com.github.ferigeek.appdooni.ui.Motion.dialogEntrance(dialog);
     }
 
     private void markDanger(Button button) {
@@ -955,6 +957,7 @@ public final class MainController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         styleDialog(alert);
+        com.github.ferigeek.appdooni.ui.Motion.shakeOnShown(alert);
         alert.showAndWait();
     }
 
