@@ -115,6 +115,7 @@
 
 .catalog-table .table-cell {
     -fx-padding: 3 6 3 6;
+    -fx-text-fill: #E6E2D5;
 }
 
 .catalog-table .table-row-cell {
