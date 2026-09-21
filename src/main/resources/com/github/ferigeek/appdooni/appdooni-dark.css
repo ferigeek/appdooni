@@ -313,3 +313,115 @@
 .dialog-pane .content .label {
     -fx-text-fill: #E6E2D5;
 }
+
+/* Dialog interiors: description boxes and pick lists use input surfaces, not Modena white. */
+.dialog-pane .text-area .content {
+    -fx-background-color: #161916;
+}
+
+.dialog-pane .list-view {
+    -fx-background-color: #161916;
+    -fx-border-color: #9A958A55;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+}
+
+.dialog-pane .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #E6E2D5;
+}
+
+.dialog-pane .list-cell:selected {
+    -fx-background-color: #C2A25726;
+    -fx-text-fill: #E6E2D5;
+}
+
+.check-combo-box .arrow {
+    -fx-background-color: #9A958A;
+}
+
+.check-box {
+    -fx-text-fill: #E6E2D5;
+}
+
+.check-box .box {
+    -fx-background-color: #161916;
+    -fx-border-color: #9A958A55;
+    -fx-border-width: 1;
+    -fx-border-radius: 3;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: #C2A257;
+}
+
+.hyperlink {
+    -fx-text-fill: #C2A257;
+}
+
+.hyperlink:visited {
+    -fx-text-fill: #C2A257;
+}
+
+/* Popups that escape the main scene styling: menus and hover tips. */
+.context-menu {
+    -fx-background-color: #1F241F;
+    -fx-border-color: #9A958A44;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+}
+
+.context-menu .menu-item .label {
+    -fx-text-fill: #E6E2D5;
+}
+
+.context-menu .menu-item:focused {
+    -fx-background-color: #C2A25726;
+}
+
+.context-menu .menu-item:focused .label {
+    -fx-text-fill: #E6E2D5;
+}
+
+.tooltip {
+    -fx-background-color: #1F241F;
+    -fx-text-fill: #E6E2D5;
+    -fx-border-color: #9A958A55;
+    -fx-border-width: 1;
+    -fx-border-radius: 4;
+    -fx-font-size: 12px;
+}
+
+/* Scrollbars stay quiet on the dark shelf. */
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .track {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #9A958A55;
+    -fx-background-radius: 4;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #9A958A88;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-background-color: #9A958A;
+}
+
+/* Empty-table note under the catalog header. */
+.catalog-table .placeholder .label {
+    -fx-text-fill: #9A958A;
+}

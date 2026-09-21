@@ -314,3 +314,87 @@
 .dialog-pane .content .label {
     -fx-text-fill: #201F1B;
 }
+
+/* Dialog interiors: description boxes and pick lists use input surfaces, not Modena white. */
+.dialog-pane .text-area .content {
+    -fx-background-color: #FFFFFFD9;
+}
+
+.dialog-pane .list-view {
+    -fx-background-color: #FFFFFFD9;
+    -fx-border-color: #6B675E66;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+}
+
+.dialog-pane .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #201F1B;
+}
+
+.dialog-pane .list-cell:selected {
+    -fx-background-color: #2F4A3C1F;
+    -fx-text-fill: #201F1B;
+}
+
+.check-combo-box .arrow {
+    -fx-background-color: #6B675E;
+}
+
+.check-box {
+    -fx-text-fill: #201F1B;
+}
+
+.check-box .box {
+    -fx-background-color: #FFFFFFD9;
+    -fx-border-color: #6B675E66;
+    -fx-border-width: 1;
+    -fx-border-radius: 3;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: #2F4A3C;
+}
+
+.hyperlink {
+    -fx-text-fill: #2F4A3C;
+}
+
+.hyperlink:visited {
+    -fx-text-fill: #2F4A3C;
+}
+
+/* Popups that escape the main scene styling: menus and hover tips. */
+.context-menu {
+    -fx-background-color: #EDEBE3;
+    -fx-border-color: #6B675E55;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+}
+
+.context-menu .menu-item .label {
+    -fx-text-fill: #201F1B;
+}
+
+.context-menu .menu-item:focused {
+    -fx-background-color: #2F4A3C1F;
+}
+
+.context-menu .menu-item:focused .label {
+    -fx-text-fill: #201F1B;
+}
+
+.tooltip {
+    -fx-background-color: #EDEBE3;
+    -fx-text-fill: #201F1B;
+    -fx-border-color: #6B675E66;
+    -fx-border-width: 1;
+    -fx-border-radius: 4;
+    -fx-font-size: 12px;
+}
+
+/* Empty-table note under the catalog header. */
+.catalog-table .placeholder .label {
+    -fx-text-fill: #6B675E;
+}
