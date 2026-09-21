@@ -130,14 +130,6 @@
                         <Tab text="All"/>
                     </tabs>
                 </TabPane>
-                <HBox spacing="8.0">
-                    <children>
-                        <TextField fx:id="appSearchField" HBox.hgrow="ALWAYS" promptText="Search for a Program ..." styleClass="search-field"/>
-                        <Button fx:id="addAppButton" mnemonicParsing="false" styleClass="primary" text="Add a Program" onAction="#onAddApplication">
-                           <graphic><FontIcon iconLiteral="fas-plus" iconSize="12"/></graphic>
-                        </Button>
-                    </children>
-                </HBox>
                 <TableView fx:id="applicationTable" styleClass="catalog-table" VBox.vgrow="ALWAYS" onMouseClicked="#onApplicationTableClicked">
                     <columns>
                         <TableColumn fx:id="nameColumn" text="Name" prefWidth="160.0"/>
@@ -148,6 +140,14 @@
                         <TableColumn fx:id="websiteColumn" text="Website" prefWidth="160.0"/>
                     </columns>
                 </TableView>
+                <HBox spacing="8.0">
+                    <children>
+                        <TextField fx:id="appSearchField" HBox.hgrow="ALWAYS" promptText="Search for a Program ..." styleClass="search-field"/>
+                        <Button fx:id="addAppButton" mnemonicParsing="false" styleClass="primary" text="Add a Program" onAction="#onAddApplication">
+                           <graphic><FontIcon iconLiteral="fas-plus" iconSize="12"/></graphic>
+                        </Button>
+                    </children>
+                </HBox>
             </children>
         </VBox>
     </center>
