@@ -14,6 +14,7 @@ import com.github.ferigeek.appdooni.service.ImportAction;
 import com.github.ferigeek.appdooni.service.OperatingSystemService;
 import com.github.ferigeek.appdooni.service.TagFilterMode;
 import com.github.ferigeek.appdooni.service.TagService;
+import com.github.ferigeek.appdooni.ui.Motion;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -145,6 +146,9 @@ public final class MainController {
                 return;
             }
             refreshApplications();
+            if (newToggle instanceof javafx.scene.Node selectedButton) {
+                Motion.pulseSelect(selectedButton);
+            }
         });
         tagFilterToggle.selectedProperty().addListener((observable, oldValue, newValue) -> refreshApplications());
         appSearchField.textProperty().addListener((observable, oldValue, newValue) -> refreshApplications());
@@ -355,6 +359,7 @@ public final class MainController {
                 .collect(Collectors.toSet());
         TagFilterMode mode = tagFilterToggle.isSelected() ? TagFilterMode.AND : TagFilterMode.OR;
         applications.setAll(applicationService.findFiltered(appSearchField.getText(), osId, tagIds, mode));
+        Motion.crossfadeOnRefresh(applicationTable);
     }
 
     private javafx.beans.property.StringProperty joinOperatingSystems(Application application) {
