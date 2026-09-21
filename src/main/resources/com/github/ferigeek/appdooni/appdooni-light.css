@@ -318,6 +318,11 @@
     -fx-fill: #EDEBE3;
 }
 
+/* OS-tab icons stay ink even when the tab is selected. */
+.toggle-button.os-tab:selected .ikonli-font-icon {
+    -fx-fill: #201F1B;
+}
+
 /* Ledger log strip: recessed, mono, quiet. */
 .log-pane {
     -fx-font-family: "JetBrains Mono", "Consolas", "Menlo", monospace;
