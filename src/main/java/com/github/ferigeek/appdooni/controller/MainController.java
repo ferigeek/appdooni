@@ -186,12 +186,15 @@ public final class MainController {
                 super.updateItem(item, empty);
                 if (empty || getIndex() < 0 || getIndex() >= getTableView().getItems().size()) {
                     setGraphic(null);
+                    setTooltip(null);
                 } else {
                     Application app = getTableView().getItems().get(getIndex());
                     setGraphic(pillBox(
                             app.getOperatingSystems().stream()
                                     .map(OperatingSystem::getName).toList(),
                             "pill-os"));
+                    setTooltip(fullListTooltip(app.getOperatingSystems().stream()
+                            .map(OperatingSystem::getName).toList()));
                 }
             }
         });
@@ -201,11 +204,14 @@ public final class MainController {
                 super.updateItem(item, empty);
                 if (empty || getIndex() < 0 || getIndex() >= getTableView().getItems().size()) {
                     setGraphic(null);
+                    setTooltip(null);
                 } else {
                     Application app = getTableView().getItems().get(getIndex());
                     setGraphic(pillBox(
                             app.getTags().stream().map(Tag::getName).toList(),
                             "pill-tag"));
+                    setTooltip(fullListTooltip(
+                            app.getTags().stream().map(Tag::getName).toList()));
                 }
             }
         });
@@ -235,6 +241,18 @@ public final class MainController {
     }
 
     /**
+     * Returns a hover tooltip with the full comma-separated list, or
+     * {@code null} when there is nothing to show. Clipped pill chips hide
+     * entries, so the tooltip is the quick way to see them all.
+     */
+    private javafx.scene.control.Tooltip fullListTooltip(java.util.List<String> values) {
+        if (values.isEmpty()) {
+            return null;
+        }
+        return new javafx.scene.control.Tooltip(String.join(", ", values));
+    }
+
+    /**
      * Attaches the active theme stylesheet to a dialog so dialogs match the
      * main window instead of falling back to unstyled Modena.
      */
@@ -256,10 +274,12 @@ public final class MainController {
     private void loadOperatingSystems() {
         Tab allTab = new Tab("All", new org.kordamp.ikonli.javafx.FontIcon("fas-layer-group"));
         allTab.setUserData(null);
+        allTab.setTooltip(new javafx.scene.control.Tooltip("All operating systems"));
         osTabPane.getTabs().setAll(allTab);
         for (OperatingSystem os : operatingSystemService.listOperatingSystems()) {
             Tab tab = new Tab(os.getName(), new org.kordamp.ikonli.javafx.FontIcon("fas-desktop"));
             tab.setUserData(os.getId());
+            tab.setTooltip(new javafx.scene.control.Tooltip(os.getName()));
             osTabPane.getTabs().add(tab);
         }
     }
