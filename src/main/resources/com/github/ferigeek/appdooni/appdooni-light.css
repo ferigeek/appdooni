@@ -123,8 +123,16 @@
     -fx-background-color: #2F4A3C1F;
 }
 
-.catalog-table .table-row-cell:selected .text {
-    -fx-fill: #201F1B;
+.catalog-table .table-row-cell:filled:selected .table-cell {
+    -fx-text-fill: #201F1B;
+}
+
+.catalog-table .table-row-cell:filled:selected .pill-os {
+    -fx-text-fill: #201F1B;
+}
+
+.catalog-table .table-row-cell:filled:selected .pill-tag {
+    -fx-text-fill: #2F4A3C;
 }
 
 .app-name-cell {
