@@ -58,35 +58,45 @@
     -fx-font-size: 12px;
 }
 
-/* OS tabs styled as library index dividers: serif label, brass spine when selected. */
-.os-tabs .tab-header-area .tab-header-background {
+/* OS strip: scrollable row of index tabs with serif labels and a brass spine when selected. */
+.os-strip {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+.os-strip > .viewport {
     -fx-background-color: transparent;
 }
 
-.os-tabs {
-    -fx-tab-min-width: 64;
-    -fx-tab-max-width: 120;
+.os-strip-box {
+    -fx-background-color: transparent;
 }
 
-.os-tabs .tab {
+.toggle-button.os-tab {
     -fx-background-color: transparent;
     -fx-border-color: transparent transparent transparent transparent;
     -fx-border-width: 0 0 0 3;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
     -fx-padding: 4 8 4 6;
-}
-
-.os-tabs .tab .tab-label {
     -fx-font-family: "Iowan Old Style", "Palatino Linotype", "Palatino", "Georgia", serif;
     -fx-font-size: 13px;
     -fx-text-fill: #9A958A;
 }
 
-.os-tabs .tab:selected {
-    -fx-background-color: #C2A2571F;
-    -fx-border-color: transparent transparent transparent #C2A257;
+.toggle-button.os-tab:hover {
+    -fx-border-color: transparent transparent transparent #9A958A66;
 }
 
-.os-tabs .tab:selected .tab-label {
+.toggle-button.os-tab:focused {
+    -fx-border-color: transparent transparent transparent #9A958A66;
+}
+
+.toggle-button.os-tab:selected {
+    -fx-background-color: #C2A2571F;
+    -fx-border-color: transparent transparent transparent #C2A257;
     -fx-text-fill: #E6E2D5;
     -fx-font-weight: bold;
 }

@@ -34,15 +34,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
@@ -63,17 +62,17 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Main window controller. Loads operating system tabs, the tag list, and the
- * application table, and keeps the table filtered by the selected operating
- * system tab, the selected tags, the tag match mode, and the search text.
- * The tag sidebar includes an AND/OR toggle and a Clear button that resets
- * the tag selection.
+ * Main window controller. Loads the operating system strip, the tag list, and
+ * the application table, and keeps the table filtered by the selected
+ * operating system entry, the selected tags, the tag match mode, and the
+ * search text. The tag sidebar includes an AND/OR toggle and a Clear button
+ * that resets the tag selection.
  */
 public final class MainController {
 
     private static final Logger log = LoggerFactory.getLogger(MainController.class);
 
-    @FXML private TabPane osTabPane;
+    @FXML private javafx.scene.layout.HBox osStripBox;
     @FXML private ListView<Tag> tagListView;
     @FXML private TextField tagSearchField;
     @FXML private ToggleButton tagFilterToggle;
@@ -101,6 +100,8 @@ public final class MainController {
     private final ObservableList<Tag> allTags = FXCollections.observableArrayList();
     private FilteredList<Tag> filteredTags;
     private final ObservableList<Application> applications = FXCollections.observableArrayList();
+    /** Single-selection group for the scrollable operating-system strip. */
+    private final ToggleGroup osToggleGroup = new ToggleGroup();
 
     public MainController() {
         DatabaseManager databaseManager = new DatabaseManager();
@@ -139,7 +140,13 @@ public final class MainController {
         applicationTable.setFixedCellSize(28);
         applicationTable.setItems(applications);
 
-        osTabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> refreshApplications());
+        osToggleGroup.selectedToggleProperty().addListener((observable, oldToggle, newToggle) -> {
+            if (newToggle == null) {
+                osToggleGroup.selectToggle(oldToggle);
+                return;
+            }
+            refreshApplications();
+        });
         tagFilterToggle.selectedProperty().addListener((observable, oldValue, newValue) -> refreshApplications());
         appSearchField.textProperty().addListener((observable, oldValue, newValue) -> refreshApplications());
         tagListView.getSelectionModel().getSelectedItems().addListener((ListChangeListener<Tag>) change -> refreshApplications());
@@ -272,16 +279,27 @@ public final class MainController {
     }
 
     private void loadOperatingSystems() {
-        Tab allTab = new Tab("All", new org.kordamp.ikonli.javafx.FontIcon("fas-layer-group"));
-        allTab.setUserData(null);
-        allTab.setTooltip(new javafx.scene.control.Tooltip("All operating systems"));
-        osTabPane.getTabs().setAll(allTab);
+        osStripBox.getChildren().clear();
+        ToggleButton allButton = osStripButton("All", "fas-layer-group", "All operating systems", null);
+        osStripBox.getChildren().add(allButton);
         for (OperatingSystem os : operatingSystemService.listOperatingSystems()) {
-            Tab tab = new Tab(os.getName(), new org.kordamp.ikonli.javafx.FontIcon("fas-desktop"));
-            tab.setUserData(os.getId());
-            tab.setTooltip(new javafx.scene.control.Tooltip(os.getName()));
-            osTabPane.getTabs().add(tab);
+            osStripBox.getChildren().add(osStripButton(os.getName(), "fas-desktop", os.getName(), os.getId()));
         }
+        osToggleGroup.selectToggle(allButton);
+    }
+
+    /**
+     * Creates one index-style button for the operating-system strip. The
+     * operating system id travels on the button's user data, with
+     * {@code null} meaning the "All" entry.
+     */
+    private ToggleButton osStripButton(String text, String iconLiteral, String tooltip, Integer osId) {
+        ToggleButton button = new ToggleButton(text, new org.kordamp.ikonli.javafx.FontIcon(iconLiteral));
+        button.getStyleClass().add("os-tab");
+        button.setToggleGroup(osToggleGroup);
+        button.setUserData(osId);
+        button.setTooltip(new javafx.scene.control.Tooltip(tooltip));
+        return button;
     }
 
     private void loadTags() {
@@ -322,20 +340,20 @@ public final class MainController {
     }
 
     private void switchTheme(String theme) {
-        if (osTabPane.getScene() != null) {
-            com.github.ferigeek.appdooni.App.applyTheme(osTabPane.getScene(), theme);
+        if (osStripBox.getScene() != null) {
+            com.github.ferigeek.appdooni.App.applyTheme(osStripBox.getScene(), theme);
         }
     }
 
     /**
-     * Reloads the application table using the current operating system tab,
-     * selected tags with the chosen AND/OR mode, and the free-text search.
+     * Reloads the application table using the current operating system strip
+     * entry, selected tags with the chosen AND/OR mode, and the free-text search.
      */
     private void refreshApplications() {
-        if (osTabPane.getSelectionModel().getSelectedItem() == null) {
+        if (osToggleGroup.getSelectedToggle() == null) {
             return;
         }
-        Integer osId = (Integer) osTabPane.getSelectionModel().getSelectedItem().getUserData();
+        Integer osId = (Integer) ((ToggleButton) osToggleGroup.getSelectedToggle()).getUserData();
         Set<Integer> tagIds = tagListView.getSelectionModel().getSelectedItems().stream()
                 .map(Tag::getId)
                 .collect(Collectors.toSet());
