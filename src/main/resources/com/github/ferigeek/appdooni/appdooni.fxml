@@ -81,7 +81,7 @@
         </HBox>
     </top>
     <right>
-        <VBox styleClass="tag-pane" BorderPane.alignment="CENTER" minWidth="200.0" prefWidth="220.0" spacing="8.0">
+        <VBox fx:id="tagPane" styleClass="tag-pane" BorderPane.alignment="CENTER" minWidth="200.0" prefWidth="220.0" spacing="8.0">
             <BorderPane.margin>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
             </BorderPane.margin>
@@ -114,7 +114,7 @@
         </VBox>
     </right>
     <center>
-        <VBox styleClass="catalog-pane" BorderPane.alignment="CENTER" spacing="8.0">
+        <VBox fx:id="catalogPane" styleClass="catalog-pane" BorderPane.alignment="CENTER" spacing="8.0">
             <BorderPane.margin>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
             </BorderPane.margin>

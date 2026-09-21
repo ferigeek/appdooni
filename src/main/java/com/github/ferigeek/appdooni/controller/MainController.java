@@ -74,11 +74,15 @@ public final class MainController {
     private static final Logger log = LoggerFactory.getLogger(MainController.class);
 
     @FXML private javafx.scene.layout.HBox osStripBox;
+    @FXML private javafx.scene.layout.VBox catalogPane;
+    @FXML private javafx.scene.layout.VBox tagPane;
     @FXML private ListView<Tag> tagListView;
     @FXML private TextField tagSearchField;
     @FXML private ToggleButton tagFilterToggle;
     /** Clear button that removes all selected tags; disabled when no tags are selected. */
     @FXML private Button clearTagFilterButton;
+    @FXML private Button addTagButton;
+    @FXML private Button addAppButton;
     @FXML private TextField appSearchField;
     @FXML private TableView<Application> applicationTable;
     @FXML private TableColumn<Application, String> nameColumn;
@@ -98,6 +102,7 @@ public final class MainController {
     private final DatabaseService databaseService;
 
     private final ObservableList<Tag> allTags = FXCollections.observableArrayList();
+    private long lastLogTickNanos;
     private FilteredList<Tag> filteredTags;
     private final ObservableList<Application> applications = FXCollections.observableArrayList();
     /** Single-selection group for the scrollable operating-system strip. */
@@ -156,9 +161,14 @@ public final class MainController {
 
         setupTagContextMenu();
 
+        Motion.pressScale(addTagButton);
+        Motion.pressScale(addAppButton);
+        logArea.textProperty().addListener((observable, oldValue, newValue) -> tickLogPane());
+
         loadOperatingSystems();
         loadTags();
         refreshApplications();
+        Motion.startupReveal(catalogPane, osStripBox, tagPane);
     }
 
     private void setupTagContextMenu() {
@@ -337,6 +347,7 @@ public final class MainController {
                 ? com.github.ferigeek.appdooni.App.THEME_DARK
                 : com.github.ferigeek.appdooni.App.THEME_LIGHT);
         syncThemeToggle();
+        Motion.spinOnce(themeToggle.getGraphic());
     }
 
     private void switchTheme(String theme) {
@@ -947,6 +958,19 @@ public final class MainController {
         } catch (IOException e) {
             log.warn("Could not load log file", e);
         }
+    }
+
+    /**
+     * Acknowledges a new ledger line with a quiet fade, throttled to one tick
+     * per 800 ms so imports do not strobe the log pane.
+     */
+    private void tickLogPane() {
+        long now = System.nanoTime();
+        if (now - lastLogTickNanos < 800_000_000L) {
+            return;
+        }
+        lastLogTickNanos = now;
+        Motion.tick(logArea);
     }
 
     private Stage stageOrDefault(ActionEvent event) {
