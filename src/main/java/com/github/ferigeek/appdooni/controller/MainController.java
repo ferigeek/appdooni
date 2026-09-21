@@ -88,6 +88,8 @@ public final class MainController {
     @FXML private TextArea logArea;
     @FXML private MenuItem importMenuItem;
     @FXML private MenuItem exportMenuItem;
+    @FXML private javafx.scene.control.RadioMenuItem lightThemeItem;
+    @FXML private javafx.scene.control.RadioMenuItem darkThemeItem;
 
     private final ApplicationService applicationService;
     private final OperatingSystemService operatingSystemService;
@@ -114,6 +116,7 @@ public final class MainController {
     public void initialize() {
         com.github.ferigeek.appdooni.logging.TextAreaAppender.setTextArea(logArea);
         loadLogFileIntoArea();
+        setupThemeMenu();
         tagListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tagFilterToggle.setTooltip(new javafx.scene.control.Tooltip(
                 "Match all selected tags (AND) or any (OR). Default OR."));
@@ -182,6 +185,40 @@ public final class MainController {
     private void applyTagFilter(String text) {
         String term = text == null ? "" : text.trim().toLowerCase();
         filteredTags.setPredicate(tag -> term.isEmpty() || tag.getName().toLowerCase().contains(term));
+    }
+
+    /**
+     * Links the View menu theme items so exactly one is selected, reflecting
+     * the persisted theme.
+     */
+    private void setupThemeMenu() {
+        javafx.scene.control.ToggleGroup themeGroup = new javafx.scene.control.ToggleGroup();
+        lightThemeItem.setToggleGroup(themeGroup);
+        darkThemeItem.setToggleGroup(themeGroup);
+        if (com.github.ferigeek.appdooni.App.THEME_DARK.equals(
+                com.github.ferigeek.appdooni.App.currentTheme())) {
+            darkThemeItem.setSelected(true);
+        } else {
+            lightThemeItem.setSelected(true);
+        }
+    }
+
+    /** Switches the main window to the light theme. */
+    @FXML
+    private void onLightTheme(ActionEvent event) {
+        switchTheme(com.github.ferigeek.appdooni.App.THEME_LIGHT);
+    }
+
+    /** Switches the main window to the dark theme. */
+    @FXML
+    private void onDarkTheme(ActionEvent event) {
+        switchTheme(com.github.ferigeek.appdooni.App.THEME_DARK);
+    }
+
+    private void switchTheme(String theme) {
+        if (osTabPane.getScene() != null) {
+            com.github.ferigeek.appdooni.App.applyTheme(osTabPane.getScene(), theme);
+        }
     }
 
     /**
