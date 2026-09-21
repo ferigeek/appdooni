@@ -12,9 +12,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
@@ -25,7 +23,9 @@
             fx:controller="com.github.ferigeek.appdooni.controller.MainController"
             prefHeight="640.0" prefWidth="960.0" styleClass="app-shell">
     <top>
-        <MenuBar>
+        <HBox alignment="CENTER_LEFT" styleClass="top-bar">
+            <children>
+        <MenuBar HBox.hgrow="ALWAYS">
             <menus>
                 <Menu text="File">
                     <items>
@@ -62,28 +62,23 @@
                         </MenuItem>
                     </items>
                 </Menu>
-                <Menu text="View">
-                    <items>
-                        <RadioMenuItem fx:id="lightThemeItem" text="Light" onAction="#onLightTheme">
-                           <graphic><FontIcon iconLiteral="fas-sun" iconSize="14"/></graphic>
-                        </RadioMenuItem>
-                        <RadioMenuItem fx:id="darkThemeItem" text="Dark" onAction="#onDarkTheme">
-                           <graphic><FontIcon iconLiteral="fas-moon" iconSize="14"/></graphic>
-                        </RadioMenuItem>
-                    </items>
-                </Menu>
                 <Menu text="About">
                     <items>
                         <MenuItem text="About" onAction="#onAbout">
-                           <graphic><FontIcon iconLiteral="fas-info-circle" iconSize="14"/></graphic>
+                            <graphic><FontIcon iconLiteral="fas-info-circle" iconSize="14"/></graphic>
                         </MenuItem>
                         <MenuItem text="Source code" onAction="#onSourceCode">
-                           <graphic><FontIcon iconLiteral="fas-code" iconSize="14"/></graphic>
+                            <graphic><FontIcon iconLiteral="fas-code" iconSize="14"/></graphic>
                         </MenuItem>
                     </items>
                 </Menu>
             </menus>
         </MenuBar>
+                <ToggleButton fx:id="themeToggle" mnemonicParsing="false" styleClass="theme-toggle" onAction="#onThemeToggle">
+                    <graphic><FontIcon iconLiteral="fas-moon" iconSize="14"/></graphic>
+                </ToggleButton>
+            </children>
+        </HBox>
     </top>
     <right>
         <VBox styleClass="tag-pane" BorderPane.alignment="CENTER" minWidth="200.0" prefWidth="220.0" spacing="8.0">

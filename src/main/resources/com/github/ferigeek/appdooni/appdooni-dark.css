@@ -26,6 +26,40 @@
     -fx-border-width: 0 0 1 0;
 }
 
+/* Unified top strip: menu bar on the left, theme toggle pinned right. */
+.top-bar {
+    -fx-background-color: #1F241F;
+    -fx-border-color: transparent transparent #9A958A44 transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 0 6 0 0;
+}
+
+.top-bar .menu-bar {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+}
+
+/* Borderless icon toggle; stays transparent even when selected (dark mode on). */
+.toggle-button.theme-toggle {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.toggle-button.theme-toggle:hover,
+.toggle-button.theme-toggle:focused {
+    -fx-border-color: #9A958A55;
+}
+
+.toggle-button.theme-toggle:selected {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: #E6E2D5;
+}
+
+.toggle-button.theme-toggle:selected .ikonli-font-icon {
+    -fx-fill: #E6E2D5;
+}
+
 .menu-bar .label {
     -fx-text-fill: #E6E2D5;
 }

@@ -89,8 +89,7 @@ public final class MainController {
     @FXML private TextArea logArea;
     @FXML private MenuItem importMenuItem;
     @FXML private MenuItem exportMenuItem;
-    @FXML private javafx.scene.control.RadioMenuItem lightThemeItem;
-    @FXML private javafx.scene.control.RadioMenuItem darkThemeItem;
+    @FXML private ToggleButton themeToggle;
 
     private final ApplicationService applicationService;
     private final OperatingSystemService operatingSystemService;
@@ -119,7 +118,7 @@ public final class MainController {
     public void initialize() {
         com.github.ferigeek.appdooni.logging.TextAreaAppender.setTextArea(logArea);
         loadLogFileIntoArea();
-        setupThemeMenu();
+        syncThemeToggle();
         tagListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tagFilterToggle.setTooltip(new javafx.scene.control.Tooltip(
                 "Match all selected tags (AND) or any (OR). Default OR."));
@@ -312,31 +311,26 @@ public final class MainController {
     }
 
     /**
-     * Links the View menu theme items so exactly one is selected, reflecting
-     * the persisted theme.
+     * Reflects the persisted theme on the top-bar toggle: selected with a sun
+     * icon in dark mode, unselected with a moon icon in light mode. The
+     * tooltip always names the theme a click will switch to.
      */
-    private void setupThemeMenu() {
-        javafx.scene.control.ToggleGroup themeGroup = new javafx.scene.control.ToggleGroup();
-        lightThemeItem.setToggleGroup(themeGroup);
-        darkThemeItem.setToggleGroup(themeGroup);
-        if (com.github.ferigeek.appdooni.App.THEME_DARK.equals(
-                com.github.ferigeek.appdooni.App.currentTheme())) {
-            darkThemeItem.setSelected(true);
-        } else {
-            lightThemeItem.setSelected(true);
-        }
+    private void syncThemeToggle() {
+        boolean dark = com.github.ferigeek.appdooni.App.THEME_DARK.equals(
+                com.github.ferigeek.appdooni.App.currentTheme());
+        themeToggle.setSelected(dark);
+        themeToggle.setGraphic(new org.kordamp.ikonli.javafx.FontIcon(dark ? "fas-sun" : "fas-moon"));
+        themeToggle.setTooltip(new javafx.scene.control.Tooltip(
+                dark ? "Switch to light theme" : "Switch to dark theme"));
     }
 
-    /** Switches the main window to the light theme. */
+    /** Switches the main window theme from the top-bar toggle. */
     @FXML
-    private void onLightTheme(ActionEvent event) {
-        switchTheme(com.github.ferigeek.appdooni.App.THEME_LIGHT);
-    }
-
-    /** Switches the main window to the dark theme. */
-    @FXML
-    private void onDarkTheme(ActionEvent event) {
-        switchTheme(com.github.ferigeek.appdooni.App.THEME_DARK);
+    private void onThemeToggle(ActionEvent event) {
+        switchTheme(themeToggle.isSelected()
+                ? com.github.ferigeek.appdooni.App.THEME_DARK
+                : com.github.ferigeek.appdooni.App.THEME_LIGHT);
+        syncThemeToggle();
     }
 
     private void switchTheme(String theme) {
